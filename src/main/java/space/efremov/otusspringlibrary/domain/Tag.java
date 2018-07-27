@@ -1,7 +1,7 @@
 package space.efremov.otusspringlibrary.domain;
 
-public class Genge extends Entity {
-    public Genge(Long id) {
+public class Tag extends Entity {
+    public Tag(Long id) {
         super(id);
     }
 }
