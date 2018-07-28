@@ -1,8 +1,8 @@
 package space.efremov.otusspringlibrary.dao.jdbc;
 
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
-import space.efremov.otusspringlibrary.dao.jdbc.mapper.TagRowMapper;
 import space.efremov.otusspringlibrary.domain.Tag;
 import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
 
@@ -14,7 +14,11 @@ import java.util.stream.Collectors;
 @Repository
 public class TagDao extends AbstractJdbcDao<Tag> {
 
-    private final TagRowMapper rowMapper = new TagRowMapper();
+    private final RowMapper<Tag> rowMapper = (RowMapper<Tag>) (resultSet, i) -> {
+        Integer id = resultSet.getInt("id");
+        String name = resultSet.getString("name");
+        return new Tag(id, name);
+    };
 
     protected TagDao(NamedParameterJdbcOperations jdbc, EntityToMapConverter converter) {
         super(jdbc, converter);

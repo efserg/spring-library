@@ -1,8 +1,8 @@
 package space.efremov.otusspringlibrary.dao.jdbc;
 
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
-import space.efremov.otusspringlibrary.dao.jdbc.mapper.PublishRowMapper;
 import space.efremov.otusspringlibrary.domain.Publish;
 import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
 
@@ -14,7 +14,11 @@ import java.util.stream.Collectors;
 @Repository
 public class PublishDao extends AbstractJdbcDao<Publish> {
 
-    private final PublishRowMapper rowMapper = new PublishRowMapper();
+    private final RowMapper<Publish> rowMapper = (RowMapper<Publish>) (resultSet, i) -> {
+        Integer id = resultSet.getInt("id");
+        String name = resultSet.getString("name");
+        return new Publish(id, name);
+    };
 
     protected PublishDao(NamedParameterJdbcOperations jdbc, EntityToMapConverter converter) {
         super(jdbc, converter);

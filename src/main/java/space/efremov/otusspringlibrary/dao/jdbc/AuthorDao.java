@@ -1,8 +1,8 @@
 package space.efremov.otusspringlibrary.dao.jdbc;
 
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
-import space.efremov.otusspringlibrary.dao.jdbc.mapper.AuthorRowMapper;
 import space.efremov.otusspringlibrary.domain.Author;
 import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
 
@@ -14,7 +14,11 @@ import java.util.stream.Collectors;
 @Repository
 public class AuthorDao extends AbstractJdbcDao<Author> {
 
-    private final AuthorRowMapper rowMapper = new AuthorRowMapper();
+    private final RowMapper<Author> rowMapper = (RowMapper<Author>) (resultSet, i) -> {
+        Integer id = resultSet.getInt("id");
+        String name = resultSet.getString("name");
+        return new Author(id, name);
+    };
 
     protected AuthorDao(NamedParameterJdbcOperations jdbc, EntityToMapConverter converter) {
         super(jdbc, converter);
@@ -53,4 +57,5 @@ public class AuthorDao extends AbstractJdbcDao<Author> {
         final List<Map> rows = jdbc.queryForList("select * from author", Collections.EMPTY_MAP);
         return rows.stream().map(m -> new Author((Integer) m.get("id"), (String) m.get("name"))).collect(Collectors.toList());
     }
+
 }
