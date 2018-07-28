@@ -32,7 +32,9 @@ public class AuthorDao extends AbstractJdbcDao<Author> {
 
     @Override
     public void delete(Author entity) {
-        jdbc.update("delete from author where id = :id", converter.getIdParam(entity.getId()));
+        final Map<String, Object> idParam = converter.getIdParam(entity.getId());
+        jdbc.update("delete from book_has_author where author_id = :id", idParam);
+        jdbc.update("delete from author where id = :id", idParam);
     }
 
     @Override
