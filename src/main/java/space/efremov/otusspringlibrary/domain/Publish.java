@@ -5,7 +5,7 @@ public class Publish extends Entity {
     private final String name;
 
 
-    public Publish(Long id, String name) {
+    public Publish(Integer id, String name) {
         super(id);
         this.name = name;
     }

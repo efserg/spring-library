@@ -11,7 +11,7 @@ public class Book extends Entity {
     private final List<Tag> tags;
     private final List<Author> authors;
 
-    public Book(Long id, String title, String isbn, int year, Publish publish, List<Tag> tags, List<Author> authors) {
+    public Book(Integer id, String title, String isbn, int year, Publish publish, List<Tag> tags, List<Author> authors) {
         super(id);
         this.title = title;
         this.isbn = isbn;

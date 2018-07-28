@@ -4,7 +4,7 @@ public class Tag extends Entity {
 
     private final String name;
 
-    public Tag(Long id, String name) {
+    public Tag(Integer id, String name) {
         super(id);
         this.name = name;
     }

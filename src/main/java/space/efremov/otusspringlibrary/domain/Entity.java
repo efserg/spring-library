@@ -1,13 +1,14 @@
 package space.efremov.otusspringlibrary.domain;
 
 public abstract class Entity {
-    private final Long id;
 
-    public Entity(Long id) {
+    protected final Integer id;
+
+    public Entity(Integer id) {
         this.id = id;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 }
