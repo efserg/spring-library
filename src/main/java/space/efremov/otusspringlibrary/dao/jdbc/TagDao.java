@@ -44,7 +44,6 @@ public class TagDao extends AbstractJdbcDao<Tag> {
     @Override
     public void update(Tag entity) {
         jdbc.update("update book_tag set name = :name where id = :id", converter.convert(entity));
-
     }
 
     @Override

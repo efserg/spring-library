@@ -27,6 +27,7 @@ INSERT INTO book_has_book_tag VALUES (1, 1);
 INSERT INTO book_has_book_tag VALUES (1, 2);
 INSERT INTO book_has_book_tag VALUES (1, 3);
 INSERT INTO book_has_book_tag VALUES (1, 6);
+INSERT INTO book_has_author VALUES (1, 1);
 
 
 
