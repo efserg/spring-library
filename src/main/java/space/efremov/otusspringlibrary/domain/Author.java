@@ -1,16 +1,9 @@
 package space.efremov.otusspringlibrary.domain;
 
-public class Author extends Entity {
-
-    private final String name;
+public class Author extends NamedEntity {
 
     public Author(Integer id, String name) {
-        super(id);
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
+        super(id, name);
     }
 
     @Override
