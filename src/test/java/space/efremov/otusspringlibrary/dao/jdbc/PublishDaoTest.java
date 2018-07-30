@@ -26,19 +26,18 @@ import static org.junit.Assert.*;
                 InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false"
         })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PublishDaoTest {
 
     @Autowired
     private PublishDao dao;
 
     @Test
-    public void aCount() {
+    public void count() {
         assertEquals(dao.count().longValue(), 1);
     }
 
     @Test
-    public void bInsert() {
+    public void insert() {
         dao.insert(new Publisher(2000, "Addison-Wesley"));
         assertEquals(dao.getById(2000).getId().longValue(), 2000);
         assertEquals(dao.getById(2000).getName(), "Addison-Wesley");
@@ -46,7 +45,7 @@ public class PublishDaoTest {
     }
 
     @Test(expected = EntityNotFoundException.class)
-    public void cDelete() {
+    public void delete() {
         dao.insert(new Publisher(3000, "John Wiley & Sons"));
         assertEquals(dao.getById(3000).getId().longValue(), 3000);
         assertEquals(dao.getById(3000).getName(), "John Wiley & Sons");
@@ -55,18 +54,18 @@ public class PublishDaoTest {
     }
 
     @Test
-    public void dGetById() {
+    public void getById() {
         assertEquals(dao.getById(1).getId().longValue(), 1);
         assertEquals(dao.getById(1).getName(), "O'Reilly Media");
     }
 
     @Test(expected = EntityNotFoundException.class)
-    public void eGetByIdExceptionCheck() {
+    public void getByIdExceptionCheck() {
         dao.getById(4000);
     }
 
     @Test
-    public void fGetAll() {
+    public void getAll() {
         final List<Publisher> authors = dao.getAll();
         assertEquals(authors.size(), 1);
         assertTrue(authors.stream().anyMatch(a -> a.getId() == 1));

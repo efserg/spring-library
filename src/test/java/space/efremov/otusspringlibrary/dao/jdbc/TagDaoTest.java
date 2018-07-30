@@ -1,22 +1,21 @@
 package space.efremov.otusspringlibrary.dao.jdbc;
 
-import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
-import space.efremov.otusspringlibrary.domain.Author;
+import space.efremov.otusspringlibrary.domain.Tag;
 import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
 
 import java.util.List;
 import java.util.Objects;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TestConfig.class,
@@ -25,30 +24,29 @@ import static org.junit.Assert.*;
                 InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false"
         })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class AuthorDaoTest {
+public class TagDaoTest {
 
     @Autowired
-    private AuthorDao dao;
+    private TagDao dao;
 
     @Test
     public void count() {
-        assertEquals(dao.count().longValue(), 1);
+        assertEquals(dao.count().longValue(), 3);
     }
 
     @Test
     public void insert() {
-        dao.insert(new Author(2000, "Donald Knuth"));
+        dao.insert(new Tag(2000, "Sci-learn"));
         assertEquals(dao.getById(2000).getId().longValue(), 2000);
-        assertEquals(dao.getById(2000).getName(), "Donald Knuth");
+        assertEquals(dao.getById(2000).getName(), "Sci-learn");
         dao.delete(2000);
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void delete() {
-        dao.insert(new Author(3000, "Dennis MacAlistair Ritchie"));
+        dao.insert(new Tag(3000, "Spring"));
         assertEquals(dao.getById(3000).getId().longValue(), 3000);
-        assertEquals(dao.getById(3000).getName(), "Dennis MacAlistair Ritchie");
+        assertEquals(dao.getById(3000).getName(), "Spring");
         dao.delete(3000);
         dao.getById(3000);
     }
@@ -56,20 +54,19 @@ public class AuthorDaoTest {
     @Test
     public void getById() {
         assertEquals(dao.getById(1).getId().longValue(), 1);
-        assertEquals(dao.getById(1).getName(), "Aurélien Géron");
+        assertEquals(dao.getById(1).getName(), "Java");
     }
 
     @Test(expected = EntityNotFoundException.class)
-    public void getByIdExceptionCheck() {
+    public void eGetByIdExceptionCheck() {
         dao.getById(4000);
     }
 
     @Test
     public void getAll() {
-        final List<Author> authors = dao.getAll();
-        assertEquals(authors.size(), 1);
-        assertTrue(authors.stream().anyMatch(a -> a.getId() == 1));
-        assertTrue(authors.stream().anyMatch(a -> Objects.equals(a.getName(), "Aurélien Géron")));
-        assertFalse(authors.stream().anyMatch(a -> a.getId() == 2));
+        final List<Tag> authors = dao.getAll();
+        assertEquals(authors.size(), 3);
+        assertTrue(authors.stream().allMatch(a -> a.getId() == 1 || a.getId() == 2 || a.getId() == 3));
+        assertTrue(authors.stream().allMatch(a -> Objects.equals(a.getName(), "Java") || Objects.equals(a.getName(), "Big Data") || Objects.equals(a.getName(), "Python")));
     }
 }
