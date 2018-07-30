@@ -30,8 +30,9 @@ public class PublishDao extends AbstractJdbcDao<Publisher> {
     }
 
     @Override
-    public void insert(Publisher entity) {
+    public Publisher insert(Publisher entity) {
         jdbc.update("insert into publisher (id, name) values (:id, :name)", converter.convert(entity));
+        return entity;
     }
 
     @Override
@@ -39,12 +40,6 @@ public class PublishDao extends AbstractJdbcDao<Publisher> {
         final Map<String, Object> idParam = converter.getIdParam(entity.getId());
         jdbc.update("delete from book where publish_id = :id", idParam);
         jdbc.update("delete from publisher where id = :id", idParam);
-    }
-
-    @Override
-    public void update(Publisher entity) {
-        jdbc.update("update publisher set name = :name where id = :id", converter.convert(entity));
-
     }
 
     @Override

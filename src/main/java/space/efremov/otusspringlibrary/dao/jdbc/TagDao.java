@@ -30,8 +30,9 @@ public class TagDao extends AbstractJdbcDao<Tag> {
     }
 
     @Override
-    public void insert(Tag entity) {
+    public Tag insert(Tag entity) {
         jdbc.update("insert into book_tag (id, name) values (:id, :name)", converter.convert(entity));
+        return entity;
     }
 
     @Override
@@ -39,11 +40,6 @@ public class TagDao extends AbstractJdbcDao<Tag> {
         final Map<String, Object> idParam = converter.getIdParam(entity.getId());
         jdbc.update("delete from book_has_book_tag where book_tag_id = :id", idParam);
         jdbc.update("delete from book_tag where id = :id", idParam);
-    }
-
-    @Override
-    public void update(Tag entity) {
-        jdbc.update("update book_tag set name = :name where id = :id", converter.convert(entity));
     }
 
     @Override

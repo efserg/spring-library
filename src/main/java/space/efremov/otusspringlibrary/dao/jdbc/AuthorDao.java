@@ -30,8 +30,9 @@ public class AuthorDao extends AbstractJdbcDao<Author> {
     }
 
     @Override
-    public void insert(Author entity) {
+    public Author insert(Author entity) {
         jdbc.update("insert into author (id, name) values (:id, :name)", converter.convert(entity));
+        return entity;
     }
 
     @Override
@@ -39,12 +40,6 @@ public class AuthorDao extends AbstractJdbcDao<Author> {
         final Map<String, Object> idParam = converter.getIdParam(entity.getId());
         jdbc.update("delete from book_has_author where author_id = :id", idParam);
         jdbc.update("delete from author where id = :id", idParam);
-    }
-
-    @Override
-    public void update(Author entity) {
-        jdbc.update("update author set name = :name where id = :id", converter.convert(entity));
-
     }
 
     @Override

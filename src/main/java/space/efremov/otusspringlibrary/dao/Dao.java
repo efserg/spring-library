@@ -8,11 +8,9 @@ public interface Dao<E> {
 
     Integer count();
 
-    void insert(E entity);
+    E insert(E entity);
 
     void delete(E entity);
-
-    void update(E entity);
 
     E getById(Integer id) throws EntityNotFoundException;
 

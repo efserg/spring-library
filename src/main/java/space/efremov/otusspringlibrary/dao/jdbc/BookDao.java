@@ -43,19 +43,15 @@ public class BookDao extends AbstractJdbcDao<Book> {
     }
 
     @Override
-    public void insert(Book entity) {
+    public Book insert(Book entity) {
         final Map<String, Object> params = converter.convert(entity);
         params.put("publishId", entity.getPublisher().getId());
         jdbc.update("insert into book (id, title, isbn, year, publish_id) values (:id, :title, :isbn, :year, :publishId )", params);
+        return getById(entity.getId());
     }
 
     @Override
     public void delete(Book entity) {
-
-    }
-
-    @Override
-    public void update(Book entity) {
 
     }
 
