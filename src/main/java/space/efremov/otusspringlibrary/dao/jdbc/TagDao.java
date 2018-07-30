@@ -4,7 +4,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 import space.efremov.otusspringlibrary.domain.Tag;
-import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
 
 import java.util.Collections;
 import java.util.List;
@@ -36,14 +35,14 @@ public class TagDao extends AbstractJdbcDao<Tag> {
     }
 
     @Override
-    public void delete(Tag entity) {
-        final Map<String, Object> idParam = converter.getIdParam(entity.getId());
+    public void delete(Integer id) {
+        final Map<String, Object> idParam = converter.getIdParam(id);
         jdbc.update("delete from book_has_book_tag where book_tag_id = :id", idParam);
         jdbc.update("delete from book_tag where id = :id", idParam);
     }
 
     @Override
-    public Tag getById(Integer id) throws EntityNotFoundException {
+    public Tag getById(Integer id) {
         return jdbc.queryForObject("select * from book_tag where id = :id", converter.getIdParam(id), rowMapper);
     }
 

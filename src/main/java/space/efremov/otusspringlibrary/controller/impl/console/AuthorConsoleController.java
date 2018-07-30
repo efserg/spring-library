@@ -33,7 +33,7 @@ public class AuthorConsoleController implements AuthorController {
     @Override
     @ShellMethod(value = "Remove author from DB.", key = "author-remove")
     public void remove(@ShellOption(help = "Author ID. You can use \"author-get\" command without id param to found ID") int id) {
-        dao.delete(dao.getById(id));
+        dao.delete(id);
     }
 
     @Override

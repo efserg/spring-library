@@ -4,7 +4,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 import space.efremov.otusspringlibrary.domain.Publisher;
-import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
 
 import java.util.Collections;
 import java.util.List;
@@ -36,14 +35,14 @@ public class PublishDao extends AbstractJdbcDao<Publisher> {
     }
 
     @Override
-    public void delete(Publisher entity) {
-        final Map<String, Object> idParam = converter.getIdParam(entity.getId());
+    public void delete(Integer id) {
+        final Map<String, Object> idParam = converter.getIdParam(id);
         jdbc.update("delete from book where publish_id = :id", idParam);
         jdbc.update("delete from publisher where id = :id", idParam);
     }
 
     @Override
-    public Publisher getById(Integer id) throws EntityNotFoundException {
+    public Publisher getById(Integer id) {
         return jdbc.queryForObject("select * from publisher where id = :id", converter.getIdParam(id), rowMapper);
     }
 

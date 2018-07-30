@@ -1,7 +1,5 @@
 package space.efremov.otusspringlibrary.dao;
 
-import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
-
 import java.util.List;
 
 public interface Dao<E> {
@@ -10,9 +8,9 @@ public interface Dao<E> {
 
     E insert(E entity);
 
-    void delete(E entity);
+    void delete(Integer id);
 
-    E getById(Integer id) throws EntityNotFoundException;
+    E getById(Integer id);
 
     List<E> getAll();
 

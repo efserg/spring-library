@@ -1,5 +1,6 @@
 package space.efremov.otusspringlibrary.dao.jdbc;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
@@ -36,15 +37,20 @@ public class AuthorDao extends AbstractJdbcDao<Author> {
     }
 
     @Override
-    public void delete(Author entity) {
-        final Map<String, Object> idParam = converter.getIdParam(entity.getId());
+    public void delete(Integer id) {
+        final Map<String, Object> idParam = converter.getIdParam(id);
+        getById(id);
         jdbc.update("delete from book_has_author where author_id = :id", idParam);
         jdbc.update("delete from author where id = :id", idParam);
     }
 
     @Override
-    public Author getById(Integer id) throws EntityNotFoundException {
-        return jdbc.queryForObject("select * from author where id = :id", converter.getIdParam(id), rowMapper);
+    public Author getById(Integer id) {
+        try {
+            return jdbc.queryForObject("select * from author where id = :id", converter.getIdParam(id), rowMapper);
+        } catch (EmptyResultDataAccessException e) {
+            throw new EntityNotFoundException();
+        }
     }
 
     @Override

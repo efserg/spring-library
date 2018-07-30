@@ -7,7 +7,6 @@ import space.efremov.otusspringlibrary.domain.Author;
 import space.efremov.otusspringlibrary.domain.Book;
 import space.efremov.otusspringlibrary.domain.Publisher;
 import space.efremov.otusspringlibrary.domain.Tag;
-import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
 
 import java.util.Collections;
 import java.util.List;
@@ -51,12 +50,12 @@ public class BookDao extends AbstractJdbcDao<Book> {
     }
 
     @Override
-    public void delete(Book entity) {
+    public void delete(Integer id) {
 
     }
 
     @Override
-    public Book getById(Integer id) throws EntityNotFoundException {
+    public Book getById(Integer id) {
         final BookDPO dpo = jdbc.queryForObject("select * from book where id = :id", converter.getIdParam(id), rowMapper);
         final Publisher publisher = publishDao.getById(dpo.publishId);
         final List<Tag> tags = jdbc.queryForList("select * from book_has_book_tag where book_id = :id", converter.getIdParam(id)).stream().map(row -> tagDao.getById((Integer) row.get("book_tag_id"))).collect(Collectors.toList());
