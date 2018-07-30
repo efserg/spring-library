@@ -1,5 +1,6 @@
 package space.efremov.otusspringlibrary.dao.jdbc;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
@@ -7,6 +8,7 @@ import space.efremov.otusspringlibrary.domain.Author;
 import space.efremov.otusspringlibrary.domain.Book;
 import space.efremov.otusspringlibrary.domain.Publisher;
 import space.efremov.otusspringlibrary.domain.Tag;
+import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
 
 import java.util.Collections;
 import java.util.List;
@@ -51,23 +53,33 @@ public class BookDao extends AbstractJdbcDao<Book> {
 
     @Override
     public void delete(Integer id) {
-
+        getById(id);
+        final Map<String, Object> idParam = converter.getIdParam(id);
+        jdbc.update("delete from book where id = :id", idParam);
     }
 
     @Override
     public Book getById(Integer id) {
-        final BookDPO dpo = jdbc.queryForObject("select * from book where id = :id", converter.getIdParam(id), rowMapper);
-        final Publisher publisher = publishDao.getById(dpo.publishId);
-        final List<Tag> tags = jdbc.queryForList("select * from book_has_book_tag where book_id = :id", converter.getIdParam(id)).stream().map(row -> tagDao.getById((Integer) row.get("book_tag_id"))).collect(Collectors.toList());
-        final List<Author> authors = jdbc.queryForList("select * from book_has_author where book_id = :id", converter.getIdParam(id)).stream().map(row -> authorDao.getById((Integer) row.get("author_id"))).collect(Collectors.toList());
-
-        return new Book(dpo.id, dpo.title, dpo.isbn, dpo.year, publisher, tags, authors);
-
+        try {
+            final BookDPO dpo = jdbc.queryForObject("select * from book where id = :id", converter.getIdParam(id), rowMapper);
+            final Publisher publisher = publishDao.getById(dpo.publishId);
+            final List<Tag> tags = jdbc.queryForList("select * from book_has_book_tag where book_id = :id", converter.getIdParam(id)).stream().map(row -> tagDao.getById((Integer) row.get("book_tag_id"))).collect(Collectors.toList());
+            final List<Author> authors = jdbc.queryForList("select * from book_has_author where book_id = :id", converter.getIdParam(id)).stream().map(row -> authorDao.getById((Integer) row.get("author_id"))).collect(Collectors.toList());
+            return new Book(dpo.id, dpo.title, dpo.isbn, dpo.year, publisher, tags, authors);
+        } catch (EmptyResultDataAccessException e) {
+            throw new EntityNotFoundException();
+        }
     }
 
     @Override
     public List<Book> getAll() {
-        return null;
+        final List<Map> rows = jdbc.queryForList("select * from book", Collections.EMPTY_MAP);
+        return rows.stream().map(m -> new BookDPO((Integer) m.get("id"), (String) m.get("title"), (String) m.get("isbn"), (Integer) m.get("year"), (Integer) m.get("publisher_id"))).map(dpo -> {
+            final Publisher publisher = publishDao.getById(dpo.publishId);
+            final List<Tag> tags = jdbc.queryForList("select * from book_has_book_tag where book_id = :id", converter.getIdParam(dpo.id)).stream().map(row -> tagDao.getById((Integer) row.get("book_tag_id"))).collect(Collectors.toList());
+            final List<Author> authors = jdbc.queryForList("select * from book_has_author where book_id = :id", converter.getIdParam(dpo.id)).stream().map(row -> authorDao.getById((Integer) row.get("author_id"))).collect(Collectors.toList());
+            return new Book(dpo.id, dpo.title, dpo.isbn, dpo.year, publisher, tags, authors);
+        }).collect(Collectors.toList());
     }
 
     private class BookDPO {

@@ -11,6 +11,7 @@ import org.springframework.shell.jline.ScriptShellApplicationRunner;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import space.efremov.otusspringlibrary.domain.Author;
+import space.efremov.otusspringlibrary.domain.Publisher;
 import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
 
 import java.util.List;
@@ -26,10 +27,10 @@ import static org.junit.Assert.*;
         })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class AuthorDaoTest {
+public class PublishDaoTest {
 
     @Autowired
-    private AuthorDao dao;
+    private PublishDao dao;
 
     @Test
     public void aCount() {
@@ -38,17 +39,17 @@ public class AuthorDaoTest {
 
     @Test
     public void bInsert() {
-        dao.insert(new Author(2000, "Donald Knuth"));
+        dao.insert(new Publisher(2000, "Addison-Wesley"));
         assertEquals(dao.getById(2000).getId().longValue(), 2000);
-        assertEquals(dao.getById(2000).getName(), "Donald Knuth");
+        assertEquals(dao.getById(2000).getName(), "Addison-Wesley");
         dao.delete(2000);
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void cDelete() {
-        dao.insert(new Author(3000, "Dennis MacAlistair Ritchie"));
+        dao.insert(new Publisher(3000, "John Wiley & Sons"));
         assertEquals(dao.getById(3000).getId().longValue(), 3000);
-        assertEquals(dao.getById(3000).getName(), "Dennis MacAlistair Ritchie");
+        assertEquals(dao.getById(3000).getName(), "John Wiley & Sons");
         dao.delete(3000);
         dao.getById(3000);
     }
@@ -56,7 +57,7 @@ public class AuthorDaoTest {
     @Test
     public void dGetById() {
         assertEquals(dao.getById(1).getId().longValue(), 1);
-        assertEquals(dao.getById(1).getName(), "Aurélien Géron");
+        assertEquals(dao.getById(1).getName(), "O'Reilly Media");
     }
 
     @Test(expected = EntityNotFoundException.class)
@@ -66,10 +67,10 @@ public class AuthorDaoTest {
 
     @Test
     public void fGetAll() {
-        final List<Author> authors = dao.getAll();
+        final List<Publisher> authors = dao.getAll();
         assertEquals(authors.size(), 1);
         assertTrue(authors.stream().anyMatch(a -> a.getId() == 1));
-        assertTrue(authors.stream().anyMatch(a -> Objects.equals(a.getName(), "Aurélien Géron")));
+        assertTrue(authors.stream().anyMatch(a -> Objects.equals(a.getName(), "O'Reilly Media")));
         assertFalse(authors.stream().anyMatch(a -> a.getId() == 2));
     }
 }

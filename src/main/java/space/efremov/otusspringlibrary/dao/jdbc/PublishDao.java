@@ -1,9 +1,11 @@
 package space.efremov.otusspringlibrary.dao.jdbc;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 import space.efremov.otusspringlibrary.domain.Publisher;
+import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
 
 import java.util.Collections;
 import java.util.List;
@@ -36,14 +38,19 @@ public class PublishDao extends AbstractJdbcDao<Publisher> {
 
     @Override
     public void delete(Integer id) {
+        getById(id);
         final Map<String, Object> idParam = converter.getIdParam(id);
-        jdbc.update("delete from book where publish_id = :id", idParam);
+        jdbc.update("delete from book where publisher_id = :id", idParam);
         jdbc.update("delete from publisher where id = :id", idParam);
     }
 
     @Override
     public Publisher getById(Integer id) {
-        return jdbc.queryForObject("select * from publisher where id = :id", converter.getIdParam(id), rowMapper);
+        try {
+            return jdbc.queryForObject("select * from publisher where id = :id", converter.getIdParam(id), rowMapper);
+        } catch (EmptyResultDataAccessException e) {
+            throw new EntityNotFoundException();
+        }
     }
 
     @Override
