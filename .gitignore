@@ -78,3 +78,5 @@ gradle
 .settings
 .springBeans
 .sts4-cache
+
+*.log
