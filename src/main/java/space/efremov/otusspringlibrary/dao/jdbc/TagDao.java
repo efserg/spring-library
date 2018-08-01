@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class TagDao extends AbstractJdbcDao<Tag> {
 
     private final RowMapper<Tag> rowMapper = (RowMapper<Tag>) (resultSet, i) -> {
-        Integer id = resultSet.getInt("id");
+        Long id = resultSet.getLong("id");
         String name = resultSet.getString("name");
         return new Tag(id, name, Collections.emptyList());
     };
@@ -26,8 +26,8 @@ public class TagDao extends AbstractJdbcDao<Tag> {
     }
 
     @Override
-    public Integer count() {
-        return jdbc.queryForObject("select count(*) from book_tag", Collections.EMPTY_MAP, Integer.class);
+    public Long count() {
+        return jdbc.queryForObject("select count(*) from book_tag", Collections.EMPTY_MAP, Long.class);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class TagDao extends AbstractJdbcDao<Tag> {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Long id) {
         getById(id);
         final Map<String, Object> idParam = converter.getIdParam(id);
         jdbc.update("delete from book_has_book_tag where book_tag_id = :id", idParam);
@@ -45,7 +45,7 @@ public class TagDao extends AbstractJdbcDao<Tag> {
     }
 
     @Override
-    public Tag getById(Integer id) {
+    public Tag getById(Long id) {
         try {
             return jdbc.queryForObject("select * from book_tag where id = :id", converter.getIdParam(id), rowMapper);
         } catch (EmptyResultDataAccessException e) {
@@ -56,6 +56,6 @@ public class TagDao extends AbstractJdbcDao<Tag> {
     @Override
     public List<Tag> getAll() {
         final List<Map> rows = jdbc.queryForList("select * from book_tag", Collections.EMPTY_MAP);
-        return rows.stream().map(m -> new Tag((Integer) m.get("id"), (String) m.get("name"), Collections.emptyList())).collect(Collectors.toList());
+        return rows.stream().map(m -> new Tag((Long) m.get("id"), (String) m.get("name"), Collections.emptyList())).collect(Collectors.toList());
     }
 }

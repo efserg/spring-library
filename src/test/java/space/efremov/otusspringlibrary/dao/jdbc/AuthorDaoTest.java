@@ -34,35 +34,38 @@ public class AuthorDaoTest {
 
     @Test
     public void count() {
-        assertEquals(dao.count().longValue(), 1);
+        assertEquals(dao.count().longValue(), 1L);
     }
 
     @Test
     public void insert() {
-        dao.insert(new Author(2000, "Donald Knuth", Collections.emptyList()));
-        assertEquals(dao.getById(2000).getId().longValue(), 2000);
-        assertEquals(dao.getById(2000).getName(), "Donald Knuth");
-        dao.delete(2000);
+        final long id = 2000;
+        dao.insert(new Author(id, "Donald Knuth", Collections.emptyList()));
+        assertEquals(dao.getById(id).getId().longValue(), id);
+        assertEquals(dao.getById(id).getName(), "Donald Knuth");
+        dao.delete(id);
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void delete() {
-        dao.insert(new Author(3000, "Dennis MacAlistair Ritchie", Collections.emptyList()));
-        assertEquals(dao.getById(3000).getId().longValue(), 3000);
-        assertEquals(dao.getById(3000).getName(), "Dennis MacAlistair Ritchie");
-        dao.delete(3000);
-        dao.getById(3000);
+        final long id = 3000;
+        dao.insert(new Author(id, "Dennis MacAlistair Ritchie", Collections.emptyList()));
+        assertEquals(dao.getById(id).getId().longValue(), id);
+        assertEquals(dao.getById(id).getName(), "Dennis MacAlistair Ritchie");
+        dao.delete(id);
+        dao.getById(id);
     }
 
     @Test
     public void getById() {
-        assertEquals(dao.getById(1).getId().longValue(), 1);
-        assertEquals(dao.getById(1).getName(), "Aurélien Géron");
+        final long id = 1;
+        assertEquals(dao.getById(id).getId().longValue(), id);
+        assertEquals(dao.getById(id).getName(), "Aurélien Géron");
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void getByIdExceptionCheck() {
-        dao.getById(4000);
+        dao.getById(4000L);
     }
 
     @Test

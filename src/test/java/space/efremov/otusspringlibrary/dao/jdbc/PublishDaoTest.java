@@ -1,16 +1,13 @@
 package space.efremov.otusspringlibrary.dao.jdbc;
 
-import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
-import space.efremov.otusspringlibrary.domain.Author;
 import space.efremov.otusspringlibrary.domain.Publisher;
 import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
 
@@ -38,38 +35,41 @@ public class PublishDaoTest {
 
     @Test
     public void insert() {
-        dao.insert(new Publisher(2000, "Addison-Wesley"));
-        assertEquals(dao.getById(2000).getId().longValue(), 2000);
-        assertEquals(dao.getById(2000).getName(), "Addison-Wesley");
-        dao.delete(2000);
+        final long id = 2000;
+        dao.insert(new Publisher(id, "Addison-Wesley"));
+        assertEquals(dao.getById(id).getId().longValue(), id);
+        assertEquals(dao.getById(id).getName(), "Addison-Wesley");
+        dao.delete(id);
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void delete() {
-        dao.insert(new Publisher(3000, "John Wiley & Sons"));
-        assertEquals(dao.getById(3000).getId().longValue(), 3000);
-        assertEquals(dao.getById(3000).getName(), "John Wiley & Sons");
-        dao.delete(3000);
-        dao.getById(3000);
+        final long id = 3000;
+        dao.insert(new Publisher(id, "John Wiley & Sons"));
+        assertEquals(dao.getById(id).getId().longValue(), id);
+        assertEquals(dao.getById(id).getName(), "John Wiley & Sons");
+        dao.delete(id);
+        dao.getById(id);
     }
 
     @Test
     public void getById() {
-        assertEquals(dao.getById(1).getId().longValue(), 1);
-        assertEquals(dao.getById(1).getName(), "O'Reilly Media");
+        final long id = 1;
+        assertEquals(dao.getById(id).getId().longValue(), id);
+        assertEquals(dao.getById(id).getName(), "O'Reilly Media");
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void getByIdExceptionCheck() {
-        dao.getById(4000);
+        dao.getById(4000L);
     }
 
     @Test
     public void getAll() {
         final List<Publisher> authors = dao.getAll();
         assertEquals(authors.size(), 1);
-        assertTrue(authors.stream().anyMatch(a -> a.getId() == 1));
+        assertTrue(authors.stream().anyMatch(a -> a.getId() == 1L));
         assertTrue(authors.stream().anyMatch(a -> Objects.equals(a.getName(), "O'Reilly Media")));
-        assertFalse(authors.stream().anyMatch(a -> a.getId() == 2));
+        assertFalse(authors.stream().anyMatch(a -> a.getId() == 2L));
     }
 }

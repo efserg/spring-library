@@ -18,7 +18,7 @@ public class Person extends AbstractEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person")
     private final List<Review> reviews;
 
-    public Person(Integer id, @Email String email, String username, List<Review> reviews) {
+    public Person(Long id, @Email String email, String username, List<Review> reviews) {
         super(id);
         this.email = email;
         this.username = username;

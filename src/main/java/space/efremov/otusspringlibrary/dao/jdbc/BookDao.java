@@ -23,11 +23,11 @@ public class BookDao extends AbstractJdbcDao<Book> {
     private AuthorDao authorDao;
 
     private final RowMapper<BookDPO> rowMapper = (RowMapper<BookDPO>) (resultSet, i) -> {
-        Integer id = resultSet.getInt("id");
+        Long id = resultSet.getLong("id");
         String title = resultSet.getString("title");
         String isbn = resultSet.getString("isbn");
         Integer year = resultSet.getInt("year");
-        Integer publishId = resultSet.getInt("publisher_id");
+        Long publishId = resultSet.getLong("publisher_id");
         return new BookDPO(id, title, isbn, year, publishId);
     };
 
@@ -39,8 +39,8 @@ public class BookDao extends AbstractJdbcDao<Book> {
     }
 
     @Override
-    public Integer count() {
-        return jdbc.queryForObject("select count(*) from book", Collections.EMPTY_MAP, Integer.class);
+    public Long count() {
+        return jdbc.queryForObject("select count(*) from book", Collections.emptyMap(), Long.class);
     }
 
     @Override
@@ -52,19 +52,19 @@ public class BookDao extends AbstractJdbcDao<Book> {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Long id) {
         getById(id);
         final Map<String, Object> idParam = converter.getIdParam(id);
         jdbc.update("delete from book where id = :id", idParam);
     }
 
     @Override
-    public Book getById(Integer id) {
+    public Book getById(Long id) {
         try {
             final BookDPO dpo = jdbc.queryForObject("select * from book where id = :id", converter.getIdParam(id), rowMapper);
             final Publisher publisher = publishDao.getById(dpo.publishId);
-            final List<Tag> tags = jdbc.queryForList("select * from book_has_book_tag where book_id = :id", converter.getIdParam(id)).stream().map(row -> tagDao.getById((Integer) row.get("book_tag_id"))).collect(Collectors.toList());
-            final List<Author> authors = jdbc.queryForList("select * from book_has_author where book_id = :id", converter.getIdParam(id)).stream().map(row -> authorDao.getById((Integer) row.get("author_id"))).collect(Collectors.toList());
+            final List<Tag> tags = jdbc.queryForList("select * from book_has_book_tag where book_id = :id", converter.getIdParam(id)).stream().map(row -> tagDao.getById((Long) row.get("book_tag_id"))).collect(Collectors.toList());
+            final List<Author> authors = jdbc.queryForList("select * from book_has_author where book_id = :id", converter.getIdParam(id)).stream().map(row -> authorDao.getById((Long) row.get("author_id"))).collect(Collectors.toList());
             return new Book(dpo.id, dpo.title, dpo.isbn, dpo.year, publisher, tags, authors, Collections.emptyList());
         } catch (EmptyResultDataAccessException e) {
             throw new EntityNotFoundException();
@@ -74,22 +74,22 @@ public class BookDao extends AbstractJdbcDao<Book> {
     @Override
     public List<Book> getAll() {
         final List<Map> rows = jdbc.queryForList("select * from book", Collections.EMPTY_MAP);
-        return rows.stream().map(m -> new BookDPO((Integer) m.get("id"), (String) m.get("title"), (String) m.get("isbn"), (Integer) m.get("year"), (Integer) m.get("publisher_id"))).map(dpo -> {
+        return rows.stream().map(m -> new BookDPO((Long) m.get("id"), (String) m.get("title"), (String) m.get("isbn"), (Integer) m.get("year"), (Long) m.get("publisher_id"))).map(dpo -> {
             final Publisher publisher = publishDao.getById(dpo.publishId);
-            final List<Tag> tags = jdbc.queryForList("select * from book_has_book_tag where book_id = :id", converter.getIdParam(dpo.id)).stream().map(row -> tagDao.getById((Integer) row.get("book_tag_id"))).collect(Collectors.toList());
-            final List<Author> authors = jdbc.queryForList("select * from book_has_author where book_id = :id", converter.getIdParam(dpo.id)).stream().map(row -> authorDao.getById((Integer) row.get("author_id"))).collect(Collectors.toList());
+            final List<Tag> tags = jdbc.queryForList("select * from book_has_book_tag where book_id = :id", converter.getIdParam(dpo.id)).stream().map(row -> tagDao.getById((Long) row.get("book_tag_id"))).collect(Collectors.toList());
+            final List<Author> authors = jdbc.queryForList("select * from book_has_author where book_id = :id", converter.getIdParam(dpo.id)).stream().map(row -> authorDao.getById((Long) row.get("author_id"))).collect(Collectors.toList());
             return new Book(dpo.id, dpo.title, dpo.isbn, dpo.year, publisher, tags, authors, Collections.emptyList());
         }).collect(Collectors.toList());
     }
 
     private class BookDPO {
-        private final Integer id;
+        private final Long id;
         private final String title;
         private final String isbn;
         private final int year;
-        private final int publishId;
+        private final Long publishId;
 
-        BookDPO(Integer id, String title, String isbn, int year, int publishId) {
+        BookDPO(Long id, String title, String isbn, int year, Long publishId) {
             this.id = id;
             this.title = title;
             this.isbn = isbn;

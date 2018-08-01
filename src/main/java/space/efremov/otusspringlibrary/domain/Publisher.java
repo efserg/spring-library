@@ -7,7 +7,7 @@ import javax.persistence.Table;
 @Table(name = "publisher")
 public class Publisher extends NamedEntity {
 
-    public Publisher(Integer id, String name) {
+    public Publisher(Long id, String name) {
         super(id, name);
     }
 

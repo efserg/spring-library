@@ -12,7 +12,7 @@ public class Tag extends NamedEntity {
     @ManyToMany(mappedBy = "authors")
     private final List<Book> books;
 
-    public Tag(Integer id, String name, List<Book> books) {
+    public Tag(Long id, String name, List<Book> books) {
         super(id, name);
         this.books = books;
     }

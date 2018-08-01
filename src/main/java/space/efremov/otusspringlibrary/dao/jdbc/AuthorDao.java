@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class AuthorDao extends AbstractJdbcDao<Author> {
 
     private final RowMapper<Author> rowMapper = (RowMapper<Author>) (resultSet, i) -> {
-        Integer id = resultSet.getInt("id");
+        Long id = resultSet.getLong("id");
         String name = resultSet.getString("name");
         return new Author(id, name, Collections.emptyList());
     };
@@ -26,8 +26,8 @@ public class AuthorDao extends AbstractJdbcDao<Author> {
     }
 
     @Override
-    public Integer count() {
-        return jdbc.queryForObject("select count(*) from author", Collections.EMPTY_MAP, Integer.class);
+    public Long count() {
+        return jdbc.queryForObject("select count(*) from author", Collections.EMPTY_MAP, Long.class);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class AuthorDao extends AbstractJdbcDao<Author> {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Long id) {
         final Map<String, Object> idParam = converter.getIdParam(id);
         getById(id);
         jdbc.update("delete from book_has_author where author_id = :id", idParam);
@@ -45,7 +45,7 @@ public class AuthorDao extends AbstractJdbcDao<Author> {
     }
 
     @Override
-    public Author getById(Integer id) {
+    public Author getById(Long id) {
         try {
             return jdbc.queryForObject("select * from author where id = :id", converter.getIdParam(id), rowMapper);
         } catch (EmptyResultDataAccessException e) {
@@ -56,7 +56,7 @@ public class AuthorDao extends AbstractJdbcDao<Author> {
     @Override
     public List<Author> getAll() {
         final List<Map> rows = jdbc.queryForList("select * from author", Collections.EMPTY_MAP);
-        return rows.stream().map(m -> new Author((Integer) m.get("id"), (String) m.get("name"), Collections.emptyList())).collect(Collectors.toList());
+        return rows.stream().map(m -> new Author((Long) m.get("id"), (String) m.get("name"), Collections.emptyList())).collect(Collectors.toList());
     }
 
 }

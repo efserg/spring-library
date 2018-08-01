@@ -4,6 +4,7 @@ import org.junit.Test;
 import space.efremov.otusspringlibrary.dao.jdbc.EntityToMapConverter;
 import space.efremov.otusspringlibrary.domain.Author;
 
+import java.util.Collections;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -15,7 +16,7 @@ public class EntityToMapConverterTest {
 
     @Test
     public void convertAuthor() {
-        Author author = new Author(1, "Alex", books);
+        Author author = new Author(1L, "Alex", Collections.emptyList());
         final Map<String, Object> map = converter.convert(author);
         assertTrue(map.containsKey("id"));
         assertTrue(map.containsKey("name"));

@@ -21,7 +21,7 @@ public class Review extends AbstractEntity {
     @Column(name = "text", length = 1024)
     private final String text;
 
-    public Review(Integer id, Person person, Book book, LocalDateTime reviewDate, String text) {
+    public Review(Long id, Person person, Book book, LocalDateTime reviewDate, String text) {
         super(id);
         this.person = person;
         this.book = book;

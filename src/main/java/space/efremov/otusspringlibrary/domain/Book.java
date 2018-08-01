@@ -31,7 +31,7 @@ public class Book extends AbstractEntity {
     @OneToMany(mappedBy = "book")
     private final List<Review> reviews;
 
-    public Book(Integer id, String title, String isbn, int year, Publisher publisher, List<Tag> tags, List<Author> authors, List<Review> reviews) {
+    public Book(Long id, String title, String isbn, int year, Publisher publisher, List<Tag> tags, List<Author> authors, List<Review> reviews) {
         super(id);
         this.title = title;
         this.isbn = isbn;

@@ -6,8 +6,8 @@ public interface AuthorController {
 
     Author add(String name);
 
-    void remove(int id);
+    void remove(Long id);
 
-    String get(Integer id);
+    String get(Long id);
 
 }

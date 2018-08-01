@@ -2,14 +2,14 @@ package space.efremov.otusspringlibrary.service;
 
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class IdGenerator {
 
-    private AtomicInteger id = new AtomicInteger(1000);
+    private AtomicLong id = new AtomicLong(1000);
 
-    public int next() {
+    public Long next() {
         return id.incrementAndGet();
     }
 }

@@ -9,7 +9,7 @@ public abstract class NamedEntity extends AbstractEntity {
     @Column(name = "name")
     protected final String name;
 
-    public NamedEntity(Integer id, String name) {
+    public NamedEntity(Long id, String name) {
         super(id);
         this.name = name;
     }

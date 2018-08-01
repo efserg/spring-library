@@ -37,30 +37,33 @@ public class TagDaoTest {
 
     @Test
     public void insert() {
-        dao.insert(new Tag(2000, "Sci-learn", Collections.emptyList()));
-        assertEquals(dao.getById(2000).getId().longValue(), 2000);
-        assertEquals(dao.getById(2000).getName(), "Sci-learn");
-        dao.delete(2000);
+        final long id = 2000;
+        dao.insert(new Tag(id, "Sci-learn", Collections.emptyList()));
+        assertEquals(dao.getById(id).getId().longValue(), id);
+        assertEquals(dao.getById(id).getName(), "Sci-learn");
+        dao.delete(id);
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void delete() {
-        dao.insert(new Tag(3000, "Spring", Collections.emptyList()));
-        assertEquals(dao.getById(3000).getId().longValue(), 3000);
-        assertEquals(dao.getById(3000).getName(), "Spring");
-        dao.delete(3000);
-        dao.getById(3000);
+        final long id = 3000;
+        dao.insert(new Tag(id, "Spring", Collections.emptyList()));
+        assertEquals(dao.getById(id).getId().longValue(), id);
+        assertEquals(dao.getById(id).getName(), "Spring");
+        dao.delete(id);
+        dao.getById(id);
     }
 
     @Test
     public void getById() {
-        assertEquals(dao.getById(1).getId().longValue(), 1);
-        assertEquals(dao.getById(1).getName(), "Java");
+        final long id = 1;
+        assertEquals(dao.getById(id).getId().longValue(), id);
+        assertEquals(dao.getById(id).getName(), "Java");
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void eGetByIdExceptionCheck() {
-        dao.getById(4000);
+        dao.getById(4000L);
     }
 
     @Test

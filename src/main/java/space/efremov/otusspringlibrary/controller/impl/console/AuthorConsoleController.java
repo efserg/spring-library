@@ -33,13 +33,13 @@ public class AuthorConsoleController implements AuthorController {
 
     @Override
     @ShellMethod(value = "Remove author from DB.", key = "author-remove")
-    public void remove(@ShellOption(help = "Author ID. You can use \"author-get\" command without id param to found ID") int id) {
+    public void remove(@ShellOption(help = "Author ID. You can use \"author-get\" command without id param to found ID") Long id) {
         dao.delete(id);
     }
 
     @Override
     @ShellMethod(value = "Get author(s) from DB.", key = "author-get")
-    public String get(@ShellOption(help = "Author ID.", defaultValue = "-1") Integer id) {
+    public String get(@ShellOption(help = "Author ID.", defaultValue = "-1") Long id) {
         if (id == -1) {
             return dao.getAll().stream().map(a -> String.format("%s %s\n", a.getId(), a.getName())).collect(Collectors.joining());
         } else {

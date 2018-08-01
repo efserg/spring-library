@@ -10,13 +10,13 @@ public abstract class AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    protected final Integer id;
+    protected final Long id;
 
-    public AbstractEntity(Integer id) {
+    public AbstractEntity(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 }
