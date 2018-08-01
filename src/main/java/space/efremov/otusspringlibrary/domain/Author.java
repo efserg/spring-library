@@ -1,9 +1,22 @@
 package space.efremov.otusspringlibrary.domain;
 
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+@Table(name = "author")
 public class Author extends NamedEntity {
 
-    public Author(Integer id, String name) {
+    @ManyToMany(mappedBy = "authors")
+    private final List<Book> books;
+
+    public Author(Integer id, String name, List<Book> books) {
         super(id, name);
+        this.books = books;
+    }
+
+    public List<Book> getBooks() {
+        return books;
     }
 
     @Override

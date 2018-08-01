@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import space.efremov.otusspringlibrary.domain.Author;
 import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,7 +39,7 @@ public class AuthorDaoTest {
 
     @Test
     public void insert() {
-        dao.insert(new Author(2000, "Donald Knuth"));
+        dao.insert(new Author(2000, "Donald Knuth", Collections.emptyList()));
         assertEquals(dao.getById(2000).getId().longValue(), 2000);
         assertEquals(dao.getById(2000).getName(), "Donald Knuth");
         dao.delete(2000);
@@ -46,7 +47,7 @@ public class AuthorDaoTest {
 
     @Test(expected = EntityNotFoundException.class)
     public void delete() {
-        dao.insert(new Author(3000, "Dennis MacAlistair Ritchie"));
+        dao.insert(new Author(3000, "Dennis MacAlistair Ritchie", Collections.emptyList()));
         assertEquals(dao.getById(3000).getId().longValue(), 3000);
         assertEquals(dao.getById(3000).getName(), "Dennis MacAlistair Ritchie");
         dao.delete(3000);

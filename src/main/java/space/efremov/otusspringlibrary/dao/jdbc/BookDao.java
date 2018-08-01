@@ -65,7 +65,7 @@ public class BookDao extends AbstractJdbcDao<Book> {
             final Publisher publisher = publishDao.getById(dpo.publishId);
             final List<Tag> tags = jdbc.queryForList("select * from book_has_book_tag where book_id = :id", converter.getIdParam(id)).stream().map(row -> tagDao.getById((Integer) row.get("book_tag_id"))).collect(Collectors.toList());
             final List<Author> authors = jdbc.queryForList("select * from book_has_author where book_id = :id", converter.getIdParam(id)).stream().map(row -> authorDao.getById((Integer) row.get("author_id"))).collect(Collectors.toList());
-            return new Book(dpo.id, dpo.title, dpo.isbn, dpo.year, publisher, tags, authors);
+            return new Book(dpo.id, dpo.title, dpo.isbn, dpo.year, publisher, tags, authors, Collections.emptyList());
         } catch (EmptyResultDataAccessException e) {
             throw new EntityNotFoundException();
         }
@@ -78,7 +78,7 @@ public class BookDao extends AbstractJdbcDao<Book> {
             final Publisher publisher = publishDao.getById(dpo.publishId);
             final List<Tag> tags = jdbc.queryForList("select * from book_has_book_tag where book_id = :id", converter.getIdParam(dpo.id)).stream().map(row -> tagDao.getById((Integer) row.get("book_tag_id"))).collect(Collectors.toList());
             final List<Author> authors = jdbc.queryForList("select * from book_has_author where book_id = :id", converter.getIdParam(dpo.id)).stream().map(row -> authorDao.getById((Integer) row.get("author_id"))).collect(Collectors.toList());
-            return new Book(dpo.id, dpo.title, dpo.isbn, dpo.year, publisher, tags, authors);
+            return new Book(dpo.id, dpo.title, dpo.isbn, dpo.year, publisher, tags, authors, Collections.emptyList());
         }).collect(Collectors.toList());
     }
 

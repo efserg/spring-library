@@ -18,7 +18,7 @@ public class TagDao extends AbstractJdbcDao<Tag> {
     private final RowMapper<Tag> rowMapper = (RowMapper<Tag>) (resultSet, i) -> {
         Integer id = resultSet.getInt("id");
         String name = resultSet.getString("name");
-        return new Tag(id, name);
+        return new Tag(id, name, Collections.emptyList());
     };
 
     protected TagDao(NamedParameterJdbcOperations jdbc, EntityToMapConverter converter) {
@@ -56,6 +56,6 @@ public class TagDao extends AbstractJdbcDao<Tag> {
     @Override
     public List<Tag> getAll() {
         final List<Map> rows = jdbc.queryForList("select * from book_tag", Collections.EMPTY_MAP);
-        return rows.stream().map(m -> new Tag((Integer) m.get("id"), (String) m.get("name"))).collect(Collectors.toList());
+        return rows.stream().map(m -> new Tag((Integer) m.get("id"), (String) m.get("name"), Collections.emptyList())).collect(Collectors.toList());
     }
 }

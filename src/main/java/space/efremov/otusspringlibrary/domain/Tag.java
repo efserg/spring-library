@@ -1,9 +1,24 @@
 package space.efremov.otusspringlibrary.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import java.util.List;
+
+@Entity
+@Table(name = "tag")
 public class Tag extends NamedEntity {
 
-    public Tag(Integer id, String name) {
+    @ManyToMany(mappedBy = "authors")
+    private final List<Book> books;
+
+    public Tag(Integer id, String name, List<Book> books) {
         super(id, name);
+        this.books = books;
+    }
+
+    public List<Book> getBooks() {
+        return books;
     }
 
     @Override

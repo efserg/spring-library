@@ -1,7 +1,12 @@
 package space.efremov.otusspringlibrary.domain;
 
-public abstract class NamedEntity extends Entity {
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 
+@MappedSuperclass
+public abstract class NamedEntity extends AbstractEntity {
+
+    @Column(name = "name")
     protected final String name;
 
     public NamedEntity(Integer id, String name) {

@@ -1,7 +1,7 @@
 package space.efremov.otusspringlibrary.dao.jdbc;
 
 import org.springframework.stereotype.Service;
-import space.efremov.otusspringlibrary.domain.Entity;
+import space.efremov.otusspringlibrary.domain.AbstractEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.HashMap;
@@ -12,7 +12,7 @@ public class EntityToMapConverter {
 
     private ObjectMapper oMapper = new ObjectMapper();
 
-    public Map<String, Object> convert(Entity entity) {
+    public Map<String, Object> convert(AbstractEntity entity) {
         return oMapper.convertValue(entity, Map.class);
     }
 

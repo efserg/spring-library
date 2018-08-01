@@ -18,7 +18,7 @@ public class AuthorDao extends AbstractJdbcDao<Author> {
     private final RowMapper<Author> rowMapper = (RowMapper<Author>) (resultSet, i) -> {
         Integer id = resultSet.getInt("id");
         String name = resultSet.getString("name");
-        return new Author(id, name);
+        return new Author(id, name, Collections.emptyList());
     };
 
     protected AuthorDao(NamedParameterJdbcOperations jdbc, EntityToMapConverter converter) {
@@ -56,7 +56,7 @@ public class AuthorDao extends AbstractJdbcDao<Author> {
     @Override
     public List<Author> getAll() {
         final List<Map> rows = jdbc.queryForList("select * from author", Collections.EMPTY_MAP);
-        return rows.stream().map(m -> new Author((Integer) m.get("id"), (String) m.get("name"))).collect(Collectors.toList());
+        return rows.stream().map(m -> new Author((Integer) m.get("id"), (String) m.get("name"), Collections.emptyList())).collect(Collectors.toList());
     }
 
 }

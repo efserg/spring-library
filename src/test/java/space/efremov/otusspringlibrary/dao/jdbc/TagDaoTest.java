@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import space.efremov.otusspringlibrary.domain.Tag;
 import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,7 +37,7 @@ public class TagDaoTest {
 
     @Test
     public void insert() {
-        dao.insert(new Tag(2000, "Sci-learn"));
+        dao.insert(new Tag(2000, "Sci-learn", Collections.emptyList()));
         assertEquals(dao.getById(2000).getId().longValue(), 2000);
         assertEquals(dao.getById(2000).getName(), "Sci-learn");
         dao.delete(2000);
@@ -44,7 +45,7 @@ public class TagDaoTest {
 
     @Test(expected = EntityNotFoundException.class)
     public void delete() {
-        dao.insert(new Tag(3000, "Spring"));
+        dao.insert(new Tag(3000, "Spring", Collections.emptyList()));
         assertEquals(dao.getById(3000).getId().longValue(), 3000);
         assertEquals(dao.getById(3000).getName(), "Spring");
         dao.delete(3000);

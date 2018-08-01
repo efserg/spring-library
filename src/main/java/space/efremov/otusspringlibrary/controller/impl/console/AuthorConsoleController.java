@@ -9,6 +9,7 @@ import space.efremov.otusspringlibrary.dao.jdbc.AuthorDao;
 import space.efremov.otusspringlibrary.domain.Author;
 import space.efremov.otusspringlibrary.service.IdGenerator;
 
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 @ShellComponent
@@ -26,7 +27,7 @@ public class AuthorConsoleController implements AuthorController {
     @Override
     @ShellMethod(value = "Add author to DB.", key = "author-add")
     public Author add(@ShellOption(help = "Author name. Use quotes if you need first name and last name, e.g. \"John Smith jr.\"") String name) {
-        final Author entity = new Author(idGenerator.next(), name);
+        final Author entity = new Author(idGenerator.next(), name, Collections.emptyList());
         return dao.insert(entity);
     }
 

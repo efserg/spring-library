@@ -1,5 +1,10 @@
 package space.efremov.otusspringlibrary.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "publisher")
 public class Publisher extends NamedEntity {
 
     public Publisher(Integer id, String name) {

@@ -15,7 +15,7 @@ public class EntityToMapConverterTest {
 
     @Test
     public void convertAuthor() {
-        Author author = new Author(1, "Alex");
+        Author author = new Author(1, "Alex", books);
         final Map<String, Object> map = converter.convert(author);
         assertTrue(map.containsKey("id"));
         assertTrue(map.containsKey("name"));
