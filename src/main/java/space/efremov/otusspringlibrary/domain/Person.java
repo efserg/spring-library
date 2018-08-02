@@ -1,39 +1,33 @@
 package space.efremov.otusspringlibrary.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.List;
 
 @Entity
 @Table(name = "person")
+@Getter
+@Setter
 public class Person extends AbstractEntity {
 
     @Email
     @Column(name = "email")
-    private final String email;
+    private String email;
 
     @Column(name = "username")
-    private final String username;
+    private String username;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person")
-    private final List<Review> reviews;
+    private List<Review> reviews;
 
-    public Person(Long id, @Email String email, String username, List<Review> reviews) {
-        super(id);
+    private Person() {
+    }
+
+    public Person(@Email String email, String username) {
         this.email = email;
         this.username = username;
-        this.reviews = reviews;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public List<Review> getReviews() {
-        return reviews;
     }
 }

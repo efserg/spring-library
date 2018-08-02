@@ -10,10 +10,9 @@ public abstract class AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    protected final Long id;
+    protected Long id;
 
-    public AbstractEntity(Long id) {
-        this.id = id;
+    public AbstractEntity() {
     }
 
     public Long getId() {

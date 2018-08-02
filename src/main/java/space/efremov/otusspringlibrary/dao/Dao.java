@@ -10,7 +10,7 @@ public interface Dao<E extends AbstractEntity> {
 
     E insert(E entity);
 
-    void delete(Long id);
+    void delete(E entity);
 
     E getById(Long id);
 

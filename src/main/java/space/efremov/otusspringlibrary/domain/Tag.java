@@ -1,5 +1,8 @@
 package space.efremov.otusspringlibrary.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -7,18 +10,18 @@ import java.util.List;
 
 @Entity
 @Table(name = "tag")
+@Getter
+@Setter
 public class Tag extends NamedEntity {
 
     @ManyToMany(mappedBy = "authors")
-    private final List<Book> books;
+    private List<Book> books;
 
-    public Tag(Long id, String name, List<Book> books) {
-        super(id, name);
-        this.books = books;
+    public Tag(String name) {
+        super(name);
     }
 
-    public List<Book> getBooks() {
-        return books;
+    private Tag() {
     }
 
     @Override
