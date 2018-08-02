@@ -1,13 +1,12 @@
 package space.efremov.otusspringlibrary.domain;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "review")
@@ -31,5 +30,37 @@ public class Review extends AbstractEntity {
     private String text;
 
     private Review() {
+    }
+
+    public Review(Person person, Book book, String text) {
+        this.person = person;
+        this.book = book;
+        this.text = text;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Review)) return false;
+        Review review = (Review) o;
+        return Objects.equals(person, review.person) &&
+                Objects.equals(book, review.book) &&
+                Objects.equals(reviewDate, review.reviewDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(person, book, reviewDate);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Review{");
+        sb.append("person=").append(person);
+        sb.append(", book=").append(book);
+        sb.append(", reviewDate=").append(reviewDate);
+        sb.append(", text='").append(text).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

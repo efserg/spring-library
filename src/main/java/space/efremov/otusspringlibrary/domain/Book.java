@@ -7,12 +7,12 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "book")
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Book extends AbstractEntity {
 
     @Column(name = "title")
@@ -39,6 +39,25 @@ public class Book extends AbstractEntity {
     @OneToMany(mappedBy = "book")
     private List<Review> reviews;
 
+    private Book() {
+    }
+
+    public Book(String title, String isbn, int year, Publisher publisher, List<Tag> tags, List<Author> authors) {
+        this.title = title;
+        this.isbn = isbn;
+        this.year = year;
+        this.publisher = publisher;
+        this.tags = tags;
+        this.authors = authors;
+    }
+
+    public Book(String title, String isbn, int year, Publisher publisher) {
+        this.title = title;
+        this.isbn = isbn;
+        this.year = year;
+        this.publisher = publisher;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Book{");
@@ -51,5 +70,21 @@ public class Book extends AbstractEntity {
         sb.append(", authors=").append(authors);
         sb.append('}');
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Book)) return false;
+        Book book = (Book) o;
+        return year == book.year &&
+                Objects.equals(title, book.title) &&
+                Objects.equals(isbn, book.isbn) &&
+                Objects.equals(publisher, book.publisher);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, isbn, year, publisher);
     }
 }
