@@ -22,7 +22,7 @@ public class UserJpaDao implements Dao<User> {
     @Override
     @Transactional
     public Long count() {
-        final TypedQuery<Long> query = em.createQuery("select count(a) from Person a", Long.class);
+        final TypedQuery<Long> query = em.createQuery("select count(a) from User a", Long.class);
         return query.getSingleResult();
     }
 
@@ -52,7 +52,7 @@ public class UserJpaDao implements Dao<User> {
     @Override
     @Transactional
     public List<User> getAll() {
-        final TypedQuery<User> query = em.createQuery("select a from Person a", User.class);
+        final TypedQuery<User> query = em.createQuery("select a from User a", User.class);
         return query.getResultList();
     }
 }
