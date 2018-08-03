@@ -1,6 +1,8 @@
 package space.efremov.otusspringlibrary.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
@@ -10,10 +12,8 @@ import javax.persistence.Table;
 @Table(name = "publisher")
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Publisher extends NamedEntity {
-
-    private Publisher() {
-    }
 
     public Publisher(String name) {
         super(name);

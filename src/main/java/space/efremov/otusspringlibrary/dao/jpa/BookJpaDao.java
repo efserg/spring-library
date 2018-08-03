@@ -2,7 +2,6 @@ package space.efremov.otusspringlibrary.dao.jpa;
 
 import org.springframework.stereotype.Repository;
 import space.efremov.otusspringlibrary.dao.Dao;
-import space.efremov.otusspringlibrary.domain.Author;
 import space.efremov.otusspringlibrary.domain.Book;
 import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
 
@@ -25,6 +24,12 @@ public class BookJpaDao implements Dao<Book> {
     public Long count() {
         final TypedQuery<Long> query = em.createQuery("select count(b) from Book b", Long.class);
         return query.getSingleResult();
+    }
+
+    @Transactional
+    public Book update(Book entity) {
+        em.merge(entity);
+        return entity;
     }
 
     @Override

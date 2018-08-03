@@ -20,13 +20,14 @@ public class BookConsoleController {
     private final BookJpaDao dao;
     private final PublisherJpaDao publisherDao;
 
+
     public BookConsoleController(BookJpaDao dao, PublisherJpaDao publisherDao) {
         this.dao = dao;
         this.publisherDao = publisherDao;
     }
 
     @ShellMethod(value = "Add book to DB.", key = "book add")
-    public Book add(@ShellOption(help = "Book title. Use quotes if you need, e.g. \"Large Scale Machine Learning with Python\"") String title,
+    public Book add(@ShellOption(help = "Book title. Use quotes if you need, e.g. \"Large Scale Machine Learning with Python\".") String title,
                     @ShellOption(help = "Book ISBN.") String isbn,
                     @ShellOption(help = "Book year.") Integer year,
                     @ShellOption(help = "Publisher ID. Use \"publisher list\" command to find ID") Long publisherId) {

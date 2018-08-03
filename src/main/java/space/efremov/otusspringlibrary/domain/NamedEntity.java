@@ -1,6 +1,8 @@
 package space.efremov.otusspringlibrary.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -10,13 +12,11 @@ import java.util.Objects;
 @MappedSuperclass
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class NamedEntity extends AbstractEntity {
 
     @Column(name = "name")
     protected String name;
-
-    protected NamedEntity() {
-    }
 
     public NamedEntity(String name) {
         this.name = name;

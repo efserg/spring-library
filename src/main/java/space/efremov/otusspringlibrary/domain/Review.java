@@ -1,6 +1,8 @@
 package space.efremov.otusspringlibrary.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -12,11 +14,12 @@ import java.util.Objects;
 @Table(name = "review")
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Review extends AbstractEntity {
 
-    @ManyToOne(targetEntity = Person.class, cascade = {CascadeType.ALL})
+    @ManyToOne(targetEntity = User.class, cascade = {CascadeType.ALL})
     @JoinColumn(name = "person_id", foreignKey = @ForeignKey(name = "FK_book_person"))
-    private Person person;
+    private User user;
 
     @ManyToOne(targetEntity = Book.class, cascade = {CascadeType.ALL})
     @JoinColumn(name = "book_id", foreignKey = @ForeignKey(name = "FK_review_book"))
@@ -29,12 +32,8 @@ public class Review extends AbstractEntity {
     @Column(name = "text", length = 1024)
     private String text;
 
-    private Review() {
-    }
-
-    public Review(Person person, Book book, String text) {
-        this.person = person;
-        this.book = book;
+    public Review(User user, String text) {
+        this.user = user;
         this.text = text;
     }
 
@@ -43,20 +42,20 @@ public class Review extends AbstractEntity {
         if (this == o) return true;
         if (!(o instanceof Review)) return false;
         Review review = (Review) o;
-        return Objects.equals(person, review.person) &&
+        return Objects.equals(user, review.user) &&
                 Objects.equals(book, review.book) &&
                 Objects.equals(reviewDate, review.reviewDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(person, book, reviewDate);
+        return Objects.hash(user, book, reviewDate);
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Review{");
-        sb.append("person=").append(person);
+        sb.append("user=").append(user);
         sb.append(", book=").append(book);
         sb.append(", reviewDate=").append(reviewDate);
         sb.append(", text='").append(text).append('\'');

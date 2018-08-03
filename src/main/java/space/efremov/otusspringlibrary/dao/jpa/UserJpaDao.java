@@ -2,8 +2,7 @@ package space.efremov.otusspringlibrary.dao.jpa;
 
 import org.springframework.stereotype.Repository;
 import space.efremov.otusspringlibrary.dao.Dao;
-import space.efremov.otusspringlibrary.domain.Author;
-import space.efremov.otusspringlibrary.domain.Person;
+import space.efremov.otusspringlibrary.domain.User;
 import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
 
 import javax.persistence.EntityManager;
@@ -12,11 +11,11 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-public class PersonJpaDao implements Dao<Person> {
+public class UserJpaDao implements Dao<User> {
 
     private final EntityManager em;
 
-    public PersonJpaDao(EntityManager em) {
+    public UserJpaDao(EntityManager em) {
         this.em = em;
     }
 
@@ -29,31 +28,31 @@ public class PersonJpaDao implements Dao<Person> {
 
     @Override
     @Transactional
-    public Person insert(Person entity) {
+    public User insert(User entity) {
         em.persist(entity);
         return entity;
     }
 
     @Override
     @Transactional
-    public void delete(Person entity) {
+    public void delete(User entity) {
         em.remove(em.contains(entity) ? entity : em.merge(entity));
     }
 
     @Override
     @Transactional
-    public Person getById(Long id) {
-        final Person person = em.find(Person.class, id);
-        if (person == null) {
+    public User getById(Long id) {
+        final User user = em.find(User.class, id);
+        if (user == null) {
             throw new EntityNotFoundException();
         }
-        return person;
+        return user;
     }
 
     @Override
     @Transactional
-    public List<Person> getAll() {
-        final TypedQuery<Person> query = em.createQuery("select a from Person a", Person.class);
+    public List<User> getAll() {
+        final TypedQuery<User> query = em.createQuery("select a from Person a", User.class);
         return query.getResultList();
     }
 }

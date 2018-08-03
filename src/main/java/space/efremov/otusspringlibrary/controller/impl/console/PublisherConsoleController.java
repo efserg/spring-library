@@ -4,10 +4,7 @@ import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-import space.efremov.otusspringlibrary.dao.jpa.AuthorJpaDao;
-import space.efremov.otusspringlibrary.dao.jpa.PersonJpaDao;
 import space.efremov.otusspringlibrary.dao.jpa.PublisherJpaDao;
-import space.efremov.otusspringlibrary.domain.Author;
 import space.efremov.otusspringlibrary.domain.Publisher;
 import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
 

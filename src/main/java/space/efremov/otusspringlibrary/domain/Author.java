@@ -1,6 +1,8 @@
 package space.efremov.otusspringlibrary.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
@@ -12,13 +14,11 @@ import java.util.List;
 @Table(name = "author")
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Author extends NamedEntity {
 
     @ManyToMany(mappedBy = "authors")
     private List<Book> books;
-
-    private Author() {
-    }
 
     public Author(String name) {
         super(name);

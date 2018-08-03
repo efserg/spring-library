@@ -1,6 +1,8 @@
 package space.efremov.otusspringlibrary.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
@@ -12,6 +14,7 @@ import java.util.List;
 @Table(name = "tag")
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Tag extends NamedEntity {
 
     @ManyToMany(mappedBy = "authors")
@@ -19,9 +22,6 @@ public class Tag extends NamedEntity {
 
     public Tag(String name) {
         super(name);
-    }
-
-    private Tag() {
     }
 
     @Override

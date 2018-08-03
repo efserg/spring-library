@@ -1,6 +1,8 @@
 package space.efremov.otusspringlibrary.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,10 +11,11 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "person")
+@Table(name = "usr")
 @Getter
 @Setter
-public class Person extends AbstractEntity {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class User extends AbstractEntity {
 
     @Email
     @Column(name = "email")
@@ -21,13 +24,10 @@ public class Person extends AbstractEntity {
     @Column(name = "username")
     private String username;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Review> reviews;
 
-    private Person() {
-    }
-
-    public Person(@Email String email, String username) {
+    public User(@Email String email, String username) {
         this.email = email;
         this.username = username;
     }
@@ -35,10 +35,10 @@ public class Person extends AbstractEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Person)) return false;
-        Person person = (Person) o;
-        return Objects.equals(email, person.email) &&
-                Objects.equals(username, person.username);
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return Objects.equals(email, user.email) &&
+                Objects.equals(username, user.username);
     }
 
     @Override
@@ -48,8 +48,9 @@ public class Person extends AbstractEntity {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Person{");
-        sb.append("email='").append(email).append('\'');
+        final StringBuilder sb = new StringBuilder("User{");
+        sb.append("id='").append(id).append('\'');
+        sb.append(", email='").append(email).append('\'');
         sb.append(", username='").append(username).append('\'');
         sb.append('}');
         return sb.toString();

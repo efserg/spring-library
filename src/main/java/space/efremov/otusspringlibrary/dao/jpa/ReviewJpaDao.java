@@ -56,4 +56,5 @@ public class ReviewJpaDao implements Dao<Review> {
         final TypedQuery<Review> query = em.createQuery("select r from Review r", Review.class);
         return query.getResultList();
     }
+
 }
