@@ -65,6 +65,8 @@ public class ReviewConsoleControllerTest {
 
     @Test
     public void addReview() {
-        controller.addReview(userId, bookId, "I will kill you, Mr. Anderson");
+        final Review review = controller.addReview(userId, bookId, "I will kill you, Mr. Anderson");
+
+
     }
 }

@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Tag extends NamedEntity {
 
-    @ManyToMany(mappedBy = "authors")
+    @ManyToMany(mappedBy = "tags")
     private List<Book> books;
 
     public Tag(String name) {

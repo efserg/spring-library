@@ -64,8 +64,6 @@ public class Book extends AbstractEntity {
         sb.append(", isbn='").append(isbn).append('\'');
         sb.append(", year=").append(year);
         sb.append(", publisher=").append(publisher);
-        sb.append(", tags=").append(tags);
-        sb.append(", authors=").append(authors);
         sb.append('}');
         return sb.toString();
     }

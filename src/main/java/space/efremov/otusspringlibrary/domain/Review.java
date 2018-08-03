@@ -56,7 +56,6 @@ public class Review extends AbstractEntity {
     public String toString() {
         final StringBuilder sb = new StringBuilder("Review{");
         sb.append("user=").append(user);
-        sb.append(", book=").append(book);
         sb.append(", reviewDate=").append(reviewDate);
         sb.append(", text='").append(text).append('\'');
         sb.append('}');
