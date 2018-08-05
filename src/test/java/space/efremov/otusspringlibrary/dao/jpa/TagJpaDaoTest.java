@@ -1,4 +1,4 @@
-package space.efremov.otusspringlibrary.dao.jdbc;
+package space.efremov.otusspringlibrary.dao.jpa;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,11 +8,13 @@ import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
+import space.efremov.otusspringlibrary.dao.TestConfig;
+import space.efremov.otusspringlibrary.domain.Author;
 import space.efremov.otusspringlibrary.domain.Tag;
 import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -24,49 +26,56 @@ import static org.junit.Assert.assertTrue;
                 InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false"
         })
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-public class TagDaoTest {
+public class TagJpaDaoTest {
 
     @Autowired
-    private TagDao dao;
+    private TagJpaDao dao;
 
     @Test
     public void count() {
-        assertEquals(dao.count().longValue(), 3);
+        final Tag PYTHON = new Tag("Python");
+        assertEquals(dao.count().longValue(), 0);
+        dao.insert(PYTHON);
+        assertEquals(dao.count().longValue(), 1);
+        dao.delete(PYTHON);
     }
 
     @Test
     public void insert() {
-        dao.insert(new Tag(2000, "Sci-learn"));
-        assertEquals(dao.getById(2000).getId().longValue(), 2000);
-        assertEquals(dao.getById(2000).getName(), "Sci-learn");
-        dao.delete(2000);
+        final Tag JAVA = new Tag("Java");
+        dao.insert(JAVA);
+        assertTrue(dao.getAll().contains(JAVA));
+        assertEquals(dao.count().longValue(), 1);
+        dao.delete(JAVA);
     }
 
     @Test(expected = EntityNotFoundException.class)
-    public void delete() {
-        dao.insert(new Tag(3000, "Spring"));
-        assertEquals(dao.getById(3000).getId().longValue(), 3000);
-        assertEquals(dao.getById(3000).getName(), "Spring");
-        dao.delete(3000);
-        dao.getById(3000);
-    }
-
-    @Test
-    public void getById() {
-        assertEquals(dao.getById(1).getId().longValue(), 1);
-        assertEquals(dao.getById(1).getName(), "Java");
+    public void getByIdAndDelete() {
+        final Tag SPRING = new Tag("Spring");
+        dao.insert(SPRING);
+        final Tag tag = dao.getById(SPRING.getId());
+        assertEquals(tag, SPRING);
+        dao.delete(SPRING);
+        dao.getById(SPRING.getId());
     }
 
     @Test(expected = EntityNotFoundException.class)
-    public void eGetByIdExceptionCheck() {
-        dao.getById(4000);
+    public void getByIdNotFoundTest() {
+        dao.getById(1L);
     }
 
     @Test
     public void getAll() {
+        final Tag PYTHON = new Tag("Python");
+        final Tag JAVA = new Tag("Java");
+        final Tag SPRING = new Tag("Spring");
+        dao.insert(PYTHON);
+        dao.insert(JAVA);
+        dao.insert(SPRING);
         final List<Tag> authors = dao.getAll();
-        assertEquals(authors.size(), 3);
-        assertTrue(authors.stream().allMatch(a -> a.getId() == 1 || a.getId() == 2 || a.getId() == 3));
-        assertTrue(authors.stream().allMatch(a -> Objects.equals(a.getName(), "Java") || Objects.equals(a.getName(), "Big Data") || Objects.equals(a.getName(), "Python")));
+        assertTrue(authors.containsAll(Arrays.asList(SPRING, JAVA, PYTHON)));
+        dao.delete(PYTHON);
+        dao.delete(JAVA);
+        dao.delete(SPRING);
     }
 }

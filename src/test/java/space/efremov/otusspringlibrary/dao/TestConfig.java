@@ -1,4 +1,4 @@
-package space.efremov.otusspringlibrary.dao.jdbc;
+package space.efremov.otusspringlibrary.dao;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;

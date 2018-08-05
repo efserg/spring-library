@@ -1,9 +1,22 @@
 package space.efremov.otusspringlibrary.domain;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "publisher")
+@Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Publisher extends NamedEntity {
 
-    public Publisher(Integer id, String name) {
-        super(id, name);
+    public Publisher(String name) {
+        super(name);
     }
 
     @Override
