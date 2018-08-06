@@ -4,58 +4,63 @@ import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-import space.efremov.otusspringlibrary.dao.jpa.BookJpaDao;
-import space.efremov.otusspringlibrary.dao.jpa.PublisherJpaDao;
+import org.springframework.transaction.annotation.Transactional;
+import space.efremov.otusspringlibrary.domain.Author;
 import space.efremov.otusspringlibrary.domain.Book;
+import space.efremov.otusspringlibrary.domain.Publisher;
 import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
+import space.efremov.otusspringlibrary.repository.AuthorRepository;
+import space.efremov.otusspringlibrary.repository.BookRepository;
+import space.efremov.otusspringlibrary.repository.PublisherRepository;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-
-import static space.efremov.otusspringlibrary.controller.impl.console.AppConstant.ENTITY_NOT_FOUND_ERROR;
 
 @ShellComponent
 @ShellCommandGroup("book")
+@Transactional(readOnly = true)
 public class BookConsoleController {
 
-    private final BookJpaDao dao;
-    private final PublisherJpaDao publisherDao;
+    private final BookRepository bookRepository;
+    private final PublisherRepository publisherRepository;
+    private final AuthorRepository authorRepository;
 
-
-    public BookConsoleController(BookJpaDao dao, PublisherJpaDao publisherDao) {
-        this.dao = dao;
-        this.publisherDao = publisherDao;
+    public BookConsoleController(BookRepository bookRepository, PublisherRepository publisherRepository, AuthorRepository authorRepository) {
+        this.bookRepository = bookRepository;
+        this.publisherRepository = publisherRepository;
+        this.authorRepository = authorRepository;
     }
 
-    @ShellMethod(value = "Add book to DB.", key = "book add")
-    public Book add(@ShellOption(help = "Book title. Use quotes if you need, e.g. \"Large Scale Machine Learning with Python\".") String title,
-                    @ShellOption(help = "Book ISBN.") String isbn,
-                    @ShellOption(help = "Book year.") Integer year,
-                    @ShellOption(help = "Publisher ID. Use \"publisher list\" command to find ID") Long publisherId) {
-        return dao.insert(new Book(title, isbn, year, publisherDao.getById(publisherId)));
+    @Transactional
+    @ShellMethod(value = "Add book to DB.", key = {"book add", "book-add"})
+    public Book add(@ShellOption(help = "Book title. Use quotes if you need, e.g. \"Large Scale Machine Learning with Python\".", value = {"title", "book-title", "bookTitle"}) String title,
+                    @ShellOption(help = "Book ISBN.", value = {"isbn", "book-isbn", "bookIsbn"}) String isbn,
+                    @ShellOption(help = "Book year.", value = {"year", "book-year", "bookYear"}) Integer year,
+                    @ShellOption(help = "Publisher ID. Use \"publisher list\" command to find publisher ID", value = {"publisher-id", "pid", "publisherId"}) Long publisherId
+//                    @ShellOption(help = "Author IDs list. Use \"author list\" command to find author ID", arity = 2, value = {"authors", "author-list", "author-ids, authorIds"}) Long[] authorIds
+    ) {
+        final Publisher publisher = publisherRepository.findById(publisherId).orElseThrow(EntityNotFoundException::new);
+//        final List<Author> authors = authorRepository.findAllById(Arrays.asList(authorIds));
+//        if (authorIds.length != authors.size()) {
+//            throw new EntityNotFoundException();
+//        }
+        return bookRepository.save(new Book(title, isbn, year, publisher, Collections.emptyList(), Collections.emptyList()));
     }
 
-    @ShellMethod(value = "Remove book from DB.", key = "book remove")
-    public String remove(@ShellOption(help = "Book ID. You can use \"book list\" command to found ID") Long id) {
-        try {
-            final Book book = dao.getById(id);
-            dao.delete(book);
-            return "Success";
-        } catch (EntityNotFoundException e) {
-            return ENTITY_NOT_FOUND_ERROR;
-        }
+    @Transactional
+    @ShellMethod(value = "Remove book from DB.", key = {"book remove", "book-remove"})
+    public void remove(@ShellOption(help = "Book ID. You can use \"book list\" command to found ID", value = {"book-id", "bid", "bookId", "id"}) Long id) {
+        bookRepository.delete(bookRepository.findById(id).orElseThrow(EntityNotFoundException::new));
     }
 
-    @ShellMethod(value = "Get book from DB.", key = "book get")
-    public String get(@ShellOption(help = "book ID.") Long id) {
-        try {
-            return dao.getById(id).toString();
-        } catch (EntityNotFoundException e) {
-            return ENTITY_NOT_FOUND_ERROR;
-        }
+    @ShellMethod(value = "Get book from DB.", key = {"book get", "book-get"})
+    public Book get(@ShellOption(help = "book ID.", value = {"book-id", "bid", "bookId", "id"}) Long id) {
+        return bookRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
-    @ShellMethod(value = "Get all books from DB.", key = "book list")
+    @ShellMethod(value = "Get all books from DB.", key = {"book list", "book-list"})
     public List<Book> list() {
-        return dao.getAll();
+        return bookRepository.findAll();
     }
 }
