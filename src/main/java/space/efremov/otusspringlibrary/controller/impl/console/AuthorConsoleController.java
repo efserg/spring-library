@@ -4,6 +4,7 @@ import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
+import org.springframework.transaction.annotation.Transactional;
 import space.efremov.otusspringlibrary.domain.Author;
 import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
 import space.efremov.otusspringlibrary.repository.AuthorRepository;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 @ShellComponent
 @ShellCommandGroup("author")
+@Transactional(readOnly = true)
 public class AuthorConsoleController {
 
     private final AuthorRepository authorRepository;
@@ -22,11 +24,13 @@ public class AuthorConsoleController {
     }
 
     @ShellMethod(value = "Add author to DB.", key = {"author add", "author-add"})
+    @Transactional
     public Author add(@ShellOption(help = "Author name. Use quotes if you need first name and last name, e.g. \"John Smith jr.\"", value = {"author", "author-name", "name", "authorName"}) String name) {
         return authorRepository.save(new Author(name));
     }
 
     @ShellMethod(value = "Remove author from DB.", key = {"author remove", "author-remove"})
+    @Transactional
     public void remove(@ShellOption(help = "Author ID. You can use \"author list\" command to found ID", value = {"author-id", "aid", "authorId", "id"}) Long id) {
         final Optional<Author> author = authorRepository.findById(id);
         authorRepository.delete(author.orElseThrow(EntityNotFoundException::new));

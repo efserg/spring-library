@@ -4,6 +4,7 @@ import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
+import org.springframework.transaction.annotation.Transactional;
 import space.efremov.otusspringlibrary.domain.Book;
 import space.efremov.otusspringlibrary.domain.Review;
 import space.efremov.otusspringlibrary.domain.User;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @ShellComponent
 @ShellCommandGroup("review")
+@Transactional(readOnly = true)
 public class ReviewConsoleController {
 
     private final ReviewRepository reviewRepository;
@@ -28,6 +30,7 @@ public class ReviewConsoleController {
         this.personDao = userRepository;
     }
 
+    @Transactional
     @ShellMethod(value = "Add book review to DB.", key = {"review add", "review-add"})
     public Review addReview(@ShellOption(help = "User ID.", value = {"user-id", "uid", "userId"}) Long userId,
                             @ShellOption(help = "Book ID.", value = {"book-id", "bid", "bookId"}) Long bookId,
