@@ -20,12 +20,10 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class ReviewConsoleController {
 
-    private final ReviewRepository reviewRepository;
     private final BookRepository bookRepository;
     private final UserRepository personDao;
 
-    public ReviewConsoleController(ReviewRepository reviewRepository, BookRepository bookRepository, UserRepository userRepository) {
-        this.reviewRepository = reviewRepository;
+    public ReviewConsoleController(BookRepository bookRepository, UserRepository userRepository) {
         this.bookRepository = bookRepository;
         this.personDao = userRepository;
     }

@@ -13,6 +13,6 @@ public interface AuthorRepository extends CrudRepository<Author, Long> {
     List<Author> findAll();
 
     @Override
-    List<Author> findAllById(Iterable<Long> longs);
+    List<Author> findAllById(Iterable<Long> ids);
 
 }
