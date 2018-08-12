@@ -14,18 +14,18 @@ import java.util.List;
 @ShellComponent
 @ShellCommandGroup("user")
 @Transactional(readOnly = true)
-public class PersonConsoleController {
+public class UserConsoleController {
 
     private final UserRepository userRepository;
 
-    public PersonConsoleController(UserRepository userRepository) {
+    public UserConsoleController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @ShellMethod(value = "Add user to DB.", key = {"user add", "user-add"})
     @Transactional
-    public User add(@ShellOption(help = "user username. Use quotes if you need first name and last name, e.g. \"John Smith jr.\"", value = {"username", "name"}) String username,
-                    @ShellOption(help = "user email") String email) {
+    public User add(@ShellOption(help = "User username. Use quotes if you need first name and last name, e.g. \"John Smith jr.\"", value = {"username", "name"}) String username,
+                    @ShellOption(help = "User email") String email) {
         return userRepository.save(new User(email, username));
     }
 
@@ -36,7 +36,7 @@ public class PersonConsoleController {
     }
 
     @ShellMethod(value = "Get user from DB.", key = {"user get", "user-get"})
-    public User get(@ShellOption(help = "user ID.", value = {"user-id", "uid", "userId", "id"}) Long id) {
+    public User get(@ShellOption(help = "User ID.", value = {"user-id", "uid", "userId", "id"}) Long id) {
         return userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 

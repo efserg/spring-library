@@ -8,11 +8,12 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
-import space.efremov.otusspringlibrary.domain.*;
+import space.efremov.otusspringlibrary.domain.Author;
 import space.efremov.otusspringlibrary.domain.Book;
+import space.efremov.otusspringlibrary.domain.Publisher;
+import space.efremov.otusspringlibrary.domain.Tag;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,33 +32,33 @@ public class BookRepositoryTest {
 
     @Test
     public void getBookByIdTest() {
-        final Author DENNIS = new Author("Dennis MacAlistair Ritchie");
-        final Author BRIAN = new Author("Brian Wilson Kernighan");
-        final Publisher BELL_LABS = new Publisher("AT&T Bell Labs");
-        final Tag C = new Tag("C");
-        final Tag CLASSIC = new Tag("Classic");
-        final Book C_LANGUAGE = new Book("The C Programming Language", "0-13-110163-3", 1978, BELL_LABS, Arrays.asList(C, CLASSIC), Arrays.asList(DENNIS, BRIAN));
-        final Long cId = em.persistAndGetId(C_LANGUAGE, Long.class);
+        final Author dennis = new Author("Dennis MacAlistair Ritchie");
+        final Author brian = new Author("Brian Wilson Kernighan");
+        final Publisher bellLabs = new Publisher("AT&T Bell Labs");
+        final Tag c = new Tag("C");
+        final Tag classic = new Tag("Classic");
+        final Book the_c_programming_language = new Book("The C Programming Language", "0-13-110163-3", 1978, bellLabs, Arrays.asList(c, classic), Arrays.asList(dennis, brian));
+        final Long cId = em.persistAndGetId(the_c_programming_language, Long.class);
         final Optional<Book> book = repository.findById(cId);
-        assertThat(book).contains(C_LANGUAGE);
+        assertThat(book).contains(the_c_programming_language);
     }
 
     @Test
     public void getNotExistBookByIdTest() {
-        final long NOT_EXIST_BOOK_ID = 1001L;
-        final Optional<Book> book = repository.findById(NOT_EXIST_BOOK_ID);
+        final long notExistBookId = 1001L;
+        final Optional<Book> book = repository.findById(notExistBookId);
         assertThat(book).isEmpty();
     }
 
     @Test
     public void deleteBookTest() {
-        final Author DENNIS = new Author("Dennis MacAlistair Ritchie");
-        final Author BRIAN = new Author("Brian Wilson Kernighan");
-        final Publisher BELL_LABS = new Publisher("AT&T Bell Labs");
+        final Author dennis = new Author("Dennis MacAlistair Ritchie");
+        final Author brian = new Author("Brian Wilson Kernighan");
+        final Publisher bellLabs = new Publisher("AT&T Bell Labs");
         final Tag C = new Tag("C");
-        final Tag CLASSIC = new Tag("Classic");
-        final Book C_LANGUAGE = new Book("The C Programming Language", "0-13-110163-3", 1978, BELL_LABS, Arrays.asList(C, CLASSIC), Arrays.asList(DENNIS, BRIAN));
-        final Long cId = em.persistAndGetId(C_LANGUAGE, Long.class);
+        final Tag classic = new Tag("Classic");
+        final Book cLanguage = new Book("The C Programming Language", "0-13-110163-3", 1978, bellLabs, Arrays.asList(C, classic), Arrays.asList(dennis, brian));
+        final Long cId = em.persistAndGetId(cLanguage, Long.class);
         final Optional<Book> book = repository.findById(cId);
         assertThat(book).isNotEmpty();
         repository.delete(book.get());

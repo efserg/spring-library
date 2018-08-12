@@ -29,43 +29,43 @@ public class AuthorRepositoryTest {
 
     @Test
     public void saveAuthorTest() {
-        final Author BRIAN = new Author("Brian Wilson Kernighan");
-        final Author author = repository.save(BRIAN);
+        final Author brian = new Author("Brian Wilson Kernighan");
+        final Author author = repository.save(brian);
         final Author find = em.find(Author.class, author.getId());
         assertThat(find).isEqualTo(author);
     }
 
     @Test
     public void getAuthorByIdTest() {
-        final Author RICHARD_STALLMAN = new Author("Richard Matthew Stallman");
-        final Long stallmanId = em.persistAndGetId(RICHARD_STALLMAN, Long.class);
+        final Author richardStallman = new Author("Richard Matthew Stallman");
+        final Long stallmanId = em.persistAndGetId(richardStallman, Long.class);
         final Optional<Author> author = repository.findById(stallmanId);
-        assertThat(author).contains(RICHARD_STALLMAN);
+        assertThat(author).contains(richardStallman);
     }
 
     @Test
     public void getNotExistAuthorByIdTest() {
-        final long NOT_EXIST_AUTHOR_ID = 1001L;
-        final Optional<Author> author = repository.findById(NOT_EXIST_AUTHOR_ID);
+        final long notExistAuthorId = 1001L;
+        final Optional<Author> author = repository.findById(notExistAuthorId);
         assertThat(author).isEmpty();
     }
 
     @Test
     public void findAuthorAllTest() {
-        final Author RICHARD_STALLMAN = new Author("Richard Matthew Stallman");
-        final Author DENNIS_RITCHIE = new Author("Dennis MacAlistair Ritchie");
-        final Author ANDREW_TANENBAUM = new Author("Andrew Stuart Tanenbaum");
-        em.persist(RICHARD_STALLMAN);
-        em.persist(DENNIS_RITCHIE);
-        em.persist(ANDREW_TANENBAUM);
+        final Author richardStallman = new Author("Richard Matthew Stallman");
+        final Author dennisRitchie = new Author("Dennis MacAlistair Ritchie");
+        final Author andrewTanenbaum = new Author("Andrew Stuart Tanenbaum");
+        em.persist(richardStallman);
+        em.persist(dennisRitchie);
+        em.persist(andrewTanenbaum);
         final List<Author> authors = repository.findAll();
-        assertThat(authors).containsOnly(RICHARD_STALLMAN, DENNIS_RITCHIE, ANDREW_TANENBAUM);
+        assertThat(authors).containsOnly(richardStallman, dennisRitchie, andrewTanenbaum);
     }
 
     @Test
     public void deleteAuthorTest() {
-        final Author DENNIS_RITCHIE = new Author("Dennis MacAlistair Ritchie");
-        final Long ritchieId = em.persistAndGetId(DENNIS_RITCHIE, Long.class);
+        final Author dennisRitchie = new Author("Dennis MacAlistair Ritchie");
+        final Long ritchieId = em.persistAndGetId(dennisRitchie, Long.class);
         final Optional<Author> author = repository.findById(ritchieId);
         assertThat(author).isNotEmpty();
         repository.delete(author.get());

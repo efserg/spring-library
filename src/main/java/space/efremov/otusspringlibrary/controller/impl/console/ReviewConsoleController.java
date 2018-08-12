@@ -10,7 +10,6 @@ import space.efremov.otusspringlibrary.domain.Review;
 import space.efremov.otusspringlibrary.domain.User;
 import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
 import space.efremov.otusspringlibrary.repository.BookRepository;
-import space.efremov.otusspringlibrary.repository.ReviewRepository;
 import space.efremov.otusspringlibrary.repository.UserRepository;
 
 import java.util.List;
@@ -21,11 +20,11 @@ import java.util.List;
 public class ReviewConsoleController {
 
     private final BookRepository bookRepository;
-    private final UserRepository personDao;
+    private final UserRepository userRepository;
 
     public ReviewConsoleController(BookRepository bookRepository, UserRepository userRepository) {
         this.bookRepository = bookRepository;
-        this.personDao = userRepository;
+        this.userRepository = userRepository;
     }
 
     @Transactional
@@ -33,7 +32,7 @@ public class ReviewConsoleController {
     public Review addReview(@ShellOption(help = "User ID.", value = {"user-id", "uid", "userId"}) Long userId,
                             @ShellOption(help = "Book ID.", value = {"book-id", "bid", "bookId"}) Long bookId,
                             @ShellOption(help = "Your review.", value = {"text", "review-text", "reviewText"}) String text) {
-        final User user = personDao.findById(userId).orElseThrow(EntityNotFoundException::new);
+        final User user = userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
         final Book book = bookRepository.findById(bookId).orElseThrow(EntityNotFoundException::new);
         final Review review = new Review(user, text);
         book.addReview(review);

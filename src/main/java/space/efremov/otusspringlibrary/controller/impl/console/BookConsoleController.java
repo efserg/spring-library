@@ -43,8 +43,7 @@ public class BookConsoleController {
                     @ShellOption(help = "Book year.", value = {"year", "book-year", "bookYear"}) Integer year,
                     @ShellOption(help = "Publisher ID. Use \"publisher list\" command to find publisher ID", value = {"publisher-id", "pid", "publisherId"}) Long publisherId,
                     @ShellOption(help = "Author IDs list, separated by \",\". Use \"author list\" command to find author ID", defaultValue = "", value = {"authors", "author-list", "author-ids, authorIds"}) String authorIds,
-                    @ShellOption(help = "Tag IDs list, separated by \",\". Use \"tag list\" command to find tag ID", defaultValue = "", value = {"tags", "tag-list", "tag-ids, tagIds"}) String tagIds
-    ) {
+                    @ShellOption(help = "Tag IDs list, separated by \",\". Use \"tag list\" command to find tag ID", defaultValue = "", value = {"tags", "tag-list", "tag-ids, tagIds"}) String tagIds) {
         final Publisher publisher = publisherRepository.findById(publisherId).orElseThrow(EntityNotFoundException::new);
         final List<Author> authors = Arrays.stream(authorIds.split(",")).map(Long::new).map(authorRepository::findById).map(a -> a.orElseThrow(EntityNotFoundException::new)).collect(Collectors.toList());
         final List<Tag> tags = Arrays.stream(tagIds.split(",")).map(Long::new).map(tagRepository::findById).map(a -> a.orElseThrow(EntityNotFoundException::new)).collect(Collectors.toList());
@@ -58,7 +57,7 @@ public class BookConsoleController {
     }
 
     @ShellMethod(value = "Get book from DB.", key = {"book get", "book-get"})
-    public Book get(@ShellOption(help = "book ID.", value = {"book-id", "bid", "bookId", "id"}) Long id) {
+    public Book get(@ShellOption(help = "Book ID.", value = {"book-id", "bid", "bookId", "id"}) Long id) {
         return bookRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 

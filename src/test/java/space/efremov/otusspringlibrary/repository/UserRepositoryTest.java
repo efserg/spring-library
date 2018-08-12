@@ -30,35 +30,35 @@ public class UserRepositoryTest {
 
     @Test
     public void getUserByIdTest() {
-        final User VASILIY_PUPKIN = new User("vasya.pupkin@mail.ru", "vasya_pupkin");
-        final Long pupkinId = em.persistAndGetId(VASILIY_PUPKIN, Long.class);
+        final User vasiliyPupkin = new User("vasya.pupkin@mail.ru", "vasya_pupkin");
+        final Long pupkinId = em.persistAndGetId(vasiliyPupkin, Long.class);
         final Optional<User> user = repository.findById(pupkinId);
-        assertThat(user).contains(VASILIY_PUPKIN);
+        assertThat(user).contains(vasiliyPupkin);
     }
 
     @Test
     public void getNotExistUserByIdTest() {
-        final long NOT_EXIST_USER_ID = 1001L;
-        final Optional<User> user = repository.findById(NOT_EXIST_USER_ID);
+        final long notExistUserId = 1001L;
+        final Optional<User> user = repository.findById(notExistUserId);
         assertThat(user).isEmpty();
     }
 
     @Test
     public void findUserAllTest() {
-        final User NORMALVERBRAUCHER = new User("normalverbraucher@company.de", "Otto.Normalverbraucher");
-        final User SVENSSON = new User("medelsvensson@company.sw", "Medelsvensson");
-        final User ROSSY = new User("mario_rossi@company.it", "MarioRossi");
-        em.persist(NORMALVERBRAUCHER);
-        em.persist(SVENSSON);
-        em.persist(ROSSY);
+        final User normalverbraucher = new User("normalverbraucher@company.de", "Otto.Normalverbraucher");
+        final User svensson = new User("medelsvensson@company.sw", "Medelsvensson");
+        final User rossy = new User("mario_rossi@company.it", "MarioRossi");
+        em.persist(normalverbraucher);
+        em.persist(svensson);
+        em.persist(rossy);
         final List<User> users = repository.findAll();
-        assertThat(users).containsOnly(NORMALVERBRAUCHER, SVENSSON, ROSSY);
+        assertThat(users).containsOnly(normalverbraucher, svensson, rossy);
     }
 
     @Test
     public void deleteUserTest() {
-        final User JOE = new User("joe_bloggs@company.uk", "JoE_BlOgGs");
-        final Long joeId = em.persistAndGetId(JOE, Long.class);
+        final User joe = new User("joe_bloggs@company.uk", "JoE_BlOgGs");
+        final Long joeId = em.persistAndGetId(joe, Long.class);
         final Optional<User> user = repository.findById(joeId);
         assertThat(user).isNotEmpty();
         repository.delete(user.get());

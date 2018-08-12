@@ -30,43 +30,43 @@ public class TagRepositoryTest {
 
     @Test
     public void saveTagTest() {
-        final Tag KOTLIN = new Tag("Kotlin");
-        final Tag tag = repository.save(KOTLIN);
+        final Tag kotlin = new Tag("Kotlin");
+        final Tag tag = repository.save(kotlin);
         final Tag find = em.find(Tag.class, tag.getId());
         assertThat(find).isEqualTo(tag);
     }
 
     @Test
     public void getTagByIdTest() {
-        final Tag PYTHON = new Tag("Python");
-        final Long pythonId = em.persistAndGetId(PYTHON, Long.class);
+        final Tag python = new Tag("Python");
+        final Long pythonId = em.persistAndGetId(python, Long.class);
         final Optional<Tag> tag = repository.findById(pythonId);
-        assertThat(tag).contains(PYTHON);
+        assertThat(tag).contains(python);
     }
 
     @Test
     public void getNotExistTagByIdTest() {
-        final long NOT_EXIST_TAG_ID = 1001L;
-        final Optional<Tag> tag = repository.findById(NOT_EXIST_TAG_ID);
+        final long notExistTagId = 1001L;
+        final Optional<Tag> tag = repository.findById(notExistTagId);
         assertThat(tag).isEmpty();
     }
 
     @Test
     public void findTagAllTest() {
-        final Tag JAVA = new Tag("Java");
-        final Tag MACHINE_LEARNING = new Tag("Machine learning");
+        final Tag java = new Tag("Java");
+        final Tag machineLearning = new Tag("Machine learning");
         final Tag OS = new Tag("OS");
-        em.persist(JAVA);
-        em.persist(MACHINE_LEARNING);
+        em.persist(java);
+        em.persist(machineLearning);
         em.persist(OS);
         final List<Tag> tags = repository.findAll();
-        assertThat(tags).containsOnly(JAVA, MACHINE_LEARNING, OS);
+        assertThat(tags).containsOnly(java, machineLearning, OS);
     }
 
     @Test
     public void deleteTagTest() {
-        final Tag SPRING = new Tag("Spring");
-        final Long ritchieId = em.persistAndGetId(SPRING, Long.class);
+        final Tag spring = new Tag("Spring");
+        final Long ritchieId = em.persistAndGetId(spring, Long.class);
         final Optional<Tag> tag = repository.findById(ritchieId);
         assertThat(tag).isNotEmpty();
         repository.delete(tag.get());

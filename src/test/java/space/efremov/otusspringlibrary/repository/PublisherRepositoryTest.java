@@ -30,43 +30,43 @@ public class PublisherRepositoryTest {
 
     @Test
     public void savePublisherTest() {
-        final Publisher APRESS = new Publisher("Apress");
-        final Publisher publisher = repository.save(APRESS);
+        final Publisher apress = new Publisher("Apress");
+        final Publisher publisher = repository.save(apress);
         final Publisher find = em.find(Publisher.class, publisher.getId());
         assertThat(find).isEqualTo(publisher);
     }
 
     @Test
     public void getPublisherByIdTest() {
-        final Publisher MS = new Publisher("Microsoft press");
-        final Long msId = em.persistAndGetId(MS, Long.class);
+        final Publisher ms = new Publisher("Microsoft press");
+        final Long msId = em.persistAndGetId(ms, Long.class);
         final Optional<Publisher> publisher = repository.findById(msId);
-        assertThat(publisher).contains(MS);
+        assertThat(publisher).contains(ms);
     }
 
     @Test
     public void getNotExistPublisherByIdTest() {
-        final long NOT_EXIST_PUBLISHER_ID = 1001L;
-        final Optional<Publisher> publisher = repository.findById(NOT_EXIST_PUBLISHER_ID);
+        final long notExistPublisherId = 1001L;
+        final Optional<Publisher> publisher = repository.findById(notExistPublisherId);
         assertThat(publisher).isEmpty();
     }
 
     @Test
     public void findPublisherAllTest() {
-        final Publisher APRESS = new Publisher("Apress");
-        final Publisher WILLEY = new Publisher("John Wiley & Sons");
-        final Publisher SAMS = new Publisher("Sams Publishing");
-        em.persist(APRESS);
-        em.persist(WILLEY);
-        em.persist(SAMS);
+        final Publisher apress = new Publisher("Apress");
+        final Publisher willey = new Publisher("John Wiley & Sons");
+        final Publisher sams = new Publisher("Sams Publishing");
+        em.persist(apress);
+        em.persist(willey);
+        em.persist(sams);
         final List<Publisher> publishers = repository.findAll();
-        assertThat(publishers).containsOnly(APRESS, WILLEY, SAMS);
+        assertThat(publishers).containsOnly(apress, willey, sams);
     }
 
     @Test
     public void deletePublisherTest() {
-        final Publisher PRAGMATIC = new Publisher("The Pragmatic Programmer");
-        final Long pragmaticId = em.persistAndGetId(PRAGMATIC, Long.class);
+        final Publisher pragmatic = new Publisher("The Pragmatic Programmer");
+        final Long pragmaticId = em.persistAndGetId(pragmatic, Long.class);
         final Optional<Publisher> publisher = repository.findById(pragmaticId);
         assertThat(publisher).isNotEmpty();
         repository.delete(publisher.get());
