@@ -1,5 +1,6 @@
 package space.efremov.otusspringlibrary.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.List;
 public class Author extends NamedEntity {
 
     @ManyToMany(mappedBy = "authors")
+    @JsonIgnore
     private List<Book> books;
 
     public Author(String name) {
