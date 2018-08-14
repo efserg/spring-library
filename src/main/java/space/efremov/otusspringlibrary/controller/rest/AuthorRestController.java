@@ -5,15 +5,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import space.efremov.otusspringlibrary.controller.rest.AuthorResourceAssembler.AuthorResource;
 import space.efremov.otusspringlibrary.domain.Author;
 import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
 import space.efremov.otusspringlibrary.repository.AuthorRepository;
-import space.efremov.otusspringlibrary.controller.rest.AuthorResourceAssembler.AuthorResource;
 
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/author")
+@RequestMapping("/authors")
 public class AuthorRestController {
 
     private final AuthorRepository authorRepository;
