@@ -38,7 +38,7 @@ public class AuthorRestController {
 
     private Author findAuthorById(long id) {
         Optional<Author> author = this.authorRepository.findById(id);
-        return author.orElseThrow(EntityNotFoundException::new);
+        return author.orElseThrow(() -> new EntityNotFoundException(Author.class, id));
     }
 
 }
