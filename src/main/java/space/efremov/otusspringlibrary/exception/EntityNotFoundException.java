@@ -9,12 +9,12 @@ public class EntityNotFoundException extends RuntimeException {
     public EntityNotFoundException() {
     }
 
-    public EntityNotFoundException(Class clazz, Long id) {
+    public EntityNotFoundException(Class<?> clazz, Long id) {
         this.clazz = clazz;
         this.id = id;
     }
 
-    public Class getClazz() {
+    public Class<?> getClazz() {
         return clazz;
     }
 

@@ -6,13 +6,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.restdocs.JUnitRestDocumentation;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,25 +18,27 @@ import org.springframework.web.context.WebApplicationContext;
 import space.efremov.otusspringlibrary.domain.Author;
 import space.efremov.otusspringlibrary.repository.AuthorRepository;
 
-import java.util.List;
+import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
+import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-//@WebMvcTest(AuthorRestController.class)
-@AutoConfigureRestDocs(outputDir = "target/snippets")
+@AutoConfigureRestDocs
 @SpringBootTest
 public class AuthorRestControllerTest {
 
@@ -59,6 +58,8 @@ public class AuthorRestControllerTest {
 
     private MockMvc mockMvc;
 
+    private final String URL = "http://localhost:8080/authors/";
+
     @Before
     public void setUp() {
         this.documentationHandler = document("{method-name}",
@@ -72,25 +73,93 @@ public class AuthorRestControllerTest {
     }
 
     @Test
-    public void shouldReturnAuthor() throws Exception {
-        final Author vasiliy_pupkin = authorRepository.save(new Author("Vasiliy Pupkin"));
+    public void deleteAuthorExample() throws Exception {
 
-        final String urlTemplate = "http://localhost:8080/authors/" + vasiliy_pupkin.getId();
-        mockMvc
-                .perform(RestDocumentationRequestBuilders.get(urlTemplate))
-                .andExpect(status().isOk())
-//                .andExpect(jsonPath("title", is(note.get("title"))))
-//                .andExpect(jsonPath("body", is(note.get("body"))))
-                .andExpect(jsonPath("_links.self.href", is(urlTemplate)))
-                .andExpect(jsonPath("_links.author-books", is(notNullValue())));
+        authorRepository.deleteAll();
 
+        final Author richardStallman = new Author("Richard Matthew Stallman");
+        authorRepository.save(richardStallman);
 
-//        final List<Author> all = authorRepository.findAll();
-//        this.mockMvc.perform(get("/authors")).andDo(print()).andExpect(status().isOk())
-////                .andExpect(content().string(containsString("Hello World")))
-//                .andDo(document("author"));
-//        this.mockMvc.perform(get("/")).andDo(print()).andExpect(status().isOk())
-//                .andExpect(content().string(containsString("Hello World")))
-//                .andDo(document("home"));
+        final String urlTemplate = URL + "{id}";
+
+        mockMvc.perform(delete(urlTemplate, richardStallman.getId()))
+                .andExpect(status().isNoContent())
+                .andDo(this.documentationHandler.document(
+                        pathParameters(
+                                parameterWithName("id").description("The author's ID"))
+
+                ));
     }
+
+    @Test
+    public void getAllAuthorsExample() throws Exception {
+
+        authorRepository.deleteAll();
+
+        final Author richardStallman = new Author("Richard Matthew Stallman");
+        final Author dennisRitchie = new Author("Dennis MacAlistair Ritchie");
+        authorRepository.saveAll(Arrays.asList(richardStallman, dennisRitchie));
+
+        mockMvc.perform(get(URL))
+                .andExpect(status().isOk())
+                .andDo(this.documentationHandler.document(
+                        responseFields(
+                                subsectionWithPath("_embedded.authorList").description("An array of <<resources-author,Author resources>>"))));
+    }
+
+    @Test
+    public void getAuthorExample() throws Exception {
+
+        authorRepository.deleteAll();
+
+        final Author brian = new Author("Brian Wilson Kernighan");
+        authorRepository.save(brian);
+        final String urlTemplate = URL + "{id}";
+        mockMvc.perform(get(urlTemplate, brian.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("name", is(brian.getName())))
+                .andExpect(jsonPath("_links.self.href", is(MessageFormat.format(URL + "{0}", brian.getId()))))
+                .andExpect(jsonPath("_links.author-books", is(notNullValue())))
+                .andDo(this.documentationHandler.document(
+                        pathParameters(
+                                parameterWithName("id").description("The author's ID")),
+                        links(
+                                linkWithRel("self").description("This <<resources-author,author>>"),
+                                linkWithRel("author-books").description("The <<resources-tagged-books,books>> that have this author")),
+                        responseFields(
+                                fieldWithPath("name").description("The name of the author"),
+                                subsectionWithPath("_links").description("<<resources-tag-links,Links>> to other resources"))));
+    }
+
+    @Test
+    public void createAuthorExample() throws Exception {
+
+        authorRepository.deleteAll();
+
+        final Map<String, String> author = new HashMap<String, String>() {{
+            put("name", "Andrew Stuart Tanenbaum");
+        }};
+
+        ConstrainedFields fields = new ConstrainedFields(AuthorInput.class);
+
+        this.mockMvc
+                .perform(post("/authors")
+                        .contentType(MediaTypes.HAL_JSON)
+                        .content(this.objectMapper.writeValueAsString(author)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("name", is(author.get("name"))))
+                .andExpect(jsonPath("_links.self.href", is(notNullValue())))
+                .andExpect(jsonPath("_links.author-books", is(notNullValue())))
+                .andDo(this.documentationHandler.document(
+                        requestFields(
+                                fields.withPath("name").description("The author's name")),
+                        links(
+                                linkWithRel("self").description("This <<resources-author,author>>"),
+                                linkWithRel("author-books").description("The <<resources-tagged-books,books>> that have this author")),
+                        responseFields(
+                                fieldWithPath("name").description("The name of the author"),
+                                subsectionWithPath("_links").description("<<resources-tag-links,Links>> to other resources")))
+                );
+    }
+
 }

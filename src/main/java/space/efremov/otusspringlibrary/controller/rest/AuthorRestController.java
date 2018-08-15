@@ -1,10 +1,8 @@
 package space.efremov.otusspringlibrary.controller.rest;
 
 import org.springframework.hateoas.Resource;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import space.efremov.otusspringlibrary.controller.rest.AuthorResourceAssembler.AuthorResource;
 import space.efremov.otusspringlibrary.domain.Author;
 import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
@@ -25,15 +23,29 @@ public class AuthorRestController {
         this.authorResourceAssembler = authorResourceAssembler;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     NestedContentResource<AuthorResource> all() {
         return new NestedContentResource<AuthorResource>(
                 this.authorResourceAssembler.toResources(this.authorRepository.findAll()));
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/{id}")
     Resource<Author> author(@PathVariable("id") long id) {
         return this.authorResourceAssembler.toResource(findAuthorById(id));
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping
+    Resource<Author> create(@RequestBody AuthorInput input) {
+        final Author author = new Author(input.getName());
+        this.authorRepository.save(author);
+        return this.authorResourceAssembler.toResource(author);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void delete(@PathVariable("id") long id) {
+        this.authorRepository.deleteById(id);
     }
 
     private Author findAuthorById(long id) {
