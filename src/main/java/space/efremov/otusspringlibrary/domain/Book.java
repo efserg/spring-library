@@ -1,5 +1,6 @@
 package space.efremov.otusspringlibrary.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,6 +39,7 @@ public class Book extends AbstractEntity {
     private List<Author> authors;
 
     @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<Review> reviews;
 
     public Book(String title, String isbn, int year, Publisher publisher, List<Tag> tags, List<Author> authors) {

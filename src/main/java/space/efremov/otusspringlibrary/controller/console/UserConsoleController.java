@@ -1,4 +1,4 @@
-package space.efremov.otusspringlibrary.controller.impl.console;
+package space.efremov.otusspringlibrary.controller.console;
 
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
