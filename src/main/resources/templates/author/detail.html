@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Author detail</title>
+</head>
+<body>
+
+<form id="edit-form" th:object="${author}" th:action="@{'/authors/' + ${author.id}}" th:method="put"
+      action="detail.html">
+    <h1>Author detail:</h1>
+
+    <div class="row">
+        <label for="id-input">ID:</label>
+        <input id="id-input" type="text" readonly="readonly" th:field="${author.id}" value="1"/>
+    </div>
+
+    <div class="row">
+        <label for="holder-input">Name:</label>
+        <input id="holder-input" name="name" type="text" th:field="${author.name}" value="John Doe"/>
+    </div>
+
+    <div class="row">
+        <button type="submit">Save</button>
+    </div>
+</form>
+
+<button type="submit" th:object="${author}" th:action="@{'/authors/' + ${author.id}}" th:method="delete">Delete</button>
+
+<table class="books">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>ISBN</th>
+        <th>Title</th>
+        <th>Year</th>
+        <th>Publisher</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books}">
+        <td th:text="${book.id}">1</td>
+        <td th:text="${book.isbn}">1-2-3-4</td>
+        <td><a th:href="@{'/books/' + ${book.id}}" th:text="${book.title}" href="../book/detail.html">Book title</a>
+        </td>
+        <td><a th:href="@{/books/(year=${book.id})}" th:text="${book.year}" href="../book/list.html">1973</a></td>
+        <td><a th:href="@{'/publishers/' + ${book.publisher.id}}" th:text="${book.publisher.name}"
+               href="publisher/detail.html">Microsoft press</a></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

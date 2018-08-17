@@ -25,7 +25,7 @@ public class AuthorRestController {
     @GetMapping
     ModelAndView all() {
         final List<Author> authors = this.authorRepository.findAll();
-        ModelAndView model = new ModelAndView("authorsView");
+        ModelAndView model = new ModelAndView("author/list");
         model.addObject("authors", authors);
         return model;
     }
@@ -33,8 +33,9 @@ public class AuthorRestController {
     @GetMapping(value = "{id}")
     ModelAndView author(@PathVariable("id") long id) {
         final Author author = findAuthorById(id);
-        ModelAndView model = new ModelAndView("authorView");
+        ModelAndView model = new ModelAndView("author/detail");
         model.addObject("author", author);
+        model.addObject("books", author.getBooks());
         return model;
     }
 
