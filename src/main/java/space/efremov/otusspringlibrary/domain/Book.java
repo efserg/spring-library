@@ -35,7 +35,9 @@ public class Book extends AbstractEntity {
     private List<Tag> tags;
 
     @ManyToMany(targetEntity = Author.class)
-    @JoinTable(name = "author_books", joinColumns = {@JoinColumn(name = "book_id", foreignKey = @ForeignKey(name = "FK_author_books_book"))}, inverseJoinColumns = {@JoinColumn(name = "author_id", foreignKey = @ForeignKey(name = "FK_author_books_author"))})
+    @JoinTable(name = "author_books",
+            joinColumns = {@JoinColumn(name = "book_id", foreignKey = @ForeignKey(name = "FK_author_books_book"))},
+            inverseJoinColumns = {@JoinColumn(name = "author_id", foreignKey = @ForeignKey(name = "FK_author_books_author"))})
     private List<Author> authors;
 
     @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)

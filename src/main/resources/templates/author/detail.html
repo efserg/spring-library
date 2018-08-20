@@ -1,23 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8"/>
     <title>Author detail</title>
 </head>
 <body>
 
-<form id="edit-form" th:object="${author}" th:action="@{'/authors/' + ${author.id}}" th:method="put"
+<div th:include="fragments/navBar">Navigation bar</div>
+
+<form id="edit-form" th:object="${author}" th:action="@{'/authors/' + ${author.id} + '/edit'}" th:method="post"
       action="detail.html">
     <h1>Author detail:</h1>
 
     <div class="row">
         <label for="id-input">ID:</label>
-        <input id="id-input" type="text" readonly="readonly" th:field="${author.id}" value="1"/>
+        <input id="id-input" type="text" readonly="readonly" th:field="*{id}" value="1"/>
     </div>
 
     <div class="row">
         <label for="holder-input">Name:</label>
-        <input id="holder-input" name="name" type="text" th:field="${author.name}" value="John Doe"/>
+        <input id="holder-input" name="name" type="text" th:field="*{name}" value="John Doe"/>
     </div>
 
     <div class="row">
@@ -25,7 +27,9 @@
     </div>
 </form>
 
-<button type="submit" th:object="${author}" th:action="@{'/authors/' + ${author.id}}" th:method="delete">Delete</button>
+<form id="delete-form" th:object="${author}" th:action="@{'/authors/' + ${author.id}}" th:method="delete">
+    <button type="submit">Delete</button>
+</form>
 
 <table class="books">
     <thead>
@@ -49,6 +53,6 @@
     </tr>
     </tbody>
 </table>
-
+<div th:include="fragments/footer">Footer</div>
 </body>
 </html>
