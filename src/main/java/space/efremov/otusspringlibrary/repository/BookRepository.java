@@ -10,4 +10,6 @@ public interface BookRepository extends CrudRepository<Book, Long> {
     @Override
     List<Book> findAll();
 
+    List<Book> findByYear(Integer year);
+
 }
