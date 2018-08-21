@@ -22,7 +22,7 @@ public class BookRestController {
     }
 
     @GetMapping
-    ModelAndView all(@RequestParam(required = false, name = "year") Integer year) {
+    ModelAndView list(@RequestParam(required = false, name = "year") Integer year) {
         final List<Book> books;
         if (year == null) {
             books = bookRepository.findAll();

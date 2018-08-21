@@ -3,10 +3,13 @@ package space.efremov.otusspringlibrary.controller.rest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import space.efremov.otusspringlibrary.domain.Author;
+import space.efremov.otusspringlibrary.domain.Book;
 import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
 import space.efremov.otusspringlibrary.repository.AuthorRepository;
+import space.efremov.otusspringlibrary.repository.BookRepository;
 
 import javax.websocket.server.PathParam;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,14 +18,22 @@ import java.util.Optional;
 public class AuthorRestController {
 
     private final AuthorRepository authorRepository;
+    private final BookRepository bookRepository;
 
-    public AuthorRestController(AuthorRepository authorRepository) {
+    public AuthorRestController(AuthorRepository authorRepository, BookRepository bookRepository) {
         this.authorRepository = authorRepository;
+        this.bookRepository = bookRepository;
     }
 
     @GetMapping
-    ModelAndView all() {
-        final List<Author> authors = this.authorRepository.findAll();
+    ModelAndView list(@RequestParam(required = false, name = "bookId") Long bookId) {
+        final List<Author> authors;
+        if (bookId == null) {
+            authors = authorRepository.findAll();
+        } else {
+            final Optional<Book> book = bookRepository.findById(bookId);
+            authors = book.map(Book::getAuthors).orElse(Collections.emptyList());
+        }
         ModelAndView model = new ModelAndView("author/list");
         model.addObject("authors", authors);
         return model;
