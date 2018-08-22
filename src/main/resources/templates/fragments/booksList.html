@@ -1,0 +1,29 @@
+<table class="books">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Authors</th>
+        <th>ISBN</th>
+        <th>Title</th>
+        <th>Year</th>
+        <th>Publisher</th>
+        <th>Tags</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books}">
+        <td th:text="${book.id}">1</td>
+        <td><a th:href="@{/authors/(bookId=${book.id})}" href="../author/list.html"
+               th:text="@{${book.authors[0].name} + '...'}">Joe Doe</a></td>
+        <td th:text="${book.isbn}">1-2-3-4</td>
+        <td><a th:href="@{'/books/' + ${book.id}}" th:text="${book.title}" href="../book/detail.html">Book title</a>
+        </td>
+        <td><a th:href="@{/books/(year=${book.year})}" th:text="${book.year}" href="../book/list.html">1973</a></td>
+        <td><a th:href="@{'/publishers/' + ${book.publisher.id}}"
+               th:text="${book.publisher.name}"
+               href="publisher/detail.html">Microsoft press</a></td>
+        <td><a th:href="@{/tags/(bookId=${book.id})}" href="../tags/list.html"
+               th:text="@{${book.tags[0].name} + '...'}">My tag</a></td>
+    </tr>
+    </tbody>
+</table>

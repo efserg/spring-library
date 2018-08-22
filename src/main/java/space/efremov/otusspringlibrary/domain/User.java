@@ -1,5 +1,6 @@
 package space.efremov.otusspringlibrary.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class User extends AbstractEntity {
     private String username;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @JsonIgnore
     private List<Review> reviews;
 
     public User(@Email String email, String username) {

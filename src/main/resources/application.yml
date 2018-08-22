@@ -12,3 +12,8 @@ spring:
   shell:
     interactive:
       enabled: false
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
