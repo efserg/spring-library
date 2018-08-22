@@ -19,7 +19,8 @@
         <td><a th:href="@{'/books/' + ${book.id}}" th:text="${book.title}" href="../book/detail.html">Book title</a>
         </td>
         <td><a th:href="@{/books/(year=${book.year})}" th:text="${book.year}" href="../book/list.html">1973</a></td>
-        <td><a th:href="@{'/publishers/' + ${book.publisher.id}}" th:text="${book.publisher.name}"
+        <td><a th:href="@{'/publishers/' + ${book.publisher.id}}"
+               th:text="${book.publisher.name}"
                href="publisher/detail.html">Microsoft press</a></td>
         <td><a th:href="@{/tags/(bookId=${book.id})}" href="../tags/list.html"
                th:text="@{${book.tags[0].name} + '...'}">My tag</a></td>

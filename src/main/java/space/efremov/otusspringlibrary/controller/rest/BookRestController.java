@@ -5,7 +5,10 @@ import org.springframework.web.servlet.ModelAndView;
 import space.efremov.otusspringlibrary.domain.Author;
 import space.efremov.otusspringlibrary.domain.Book;
 import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
+import space.efremov.otusspringlibrary.repository.AuthorRepository;
 import space.efremov.otusspringlibrary.repository.BookRepository;
+import space.efremov.otusspringlibrary.repository.PublisherRepository;
+import space.efremov.otusspringlibrary.repository.TagRepository;
 
 import javax.websocket.server.PathParam;
 import java.util.List;
@@ -16,9 +19,15 @@ import java.util.Optional;
 public class BookRestController {
 
     private final BookRepository bookRepository;
+    private final TagRepository tagRepository;
+    private final PublisherRepository publisherRepository;
+    private final AuthorRepository authorRepository;
 
-    public BookRestController(BookRepository bookRepository) {
+    public BookRestController(BookRepository bookRepository, TagRepository tagRepository, PublisherRepository publisherRepository, AuthorRepository authorRepository) {
         this.bookRepository = bookRepository;
+        this.tagRepository = tagRepository;
+        this.publisherRepository = publisherRepository;
+        this.authorRepository = authorRepository;
     }
 
     @GetMapping
@@ -39,17 +48,17 @@ public class BookRestController {
         final Book book = findBookById(id);
         ModelAndView model = new ModelAndView("book/detail");
         model.addObject("book", book);
-        model.addObject("authors", book.getAuthors());
-        model.addObject("tags", book.getTags());
+        model.addObject("publishers", publisherRepository.findAll());
+        model.addObject("tags", tagRepository.findAll());
+        model.addObject("authors", authorRepository.findAll());
         return model;
     }
 
     @GetMapping(value = "add")
     ModelAndView create() {
         final Book book = new Book("", "", 0, null);
-        ModelAndView model = new ModelAndView("book/detail");
-        model.addObject("book", book);
-        return model;
+        bookRepository.save(book);
+        return book(book.getId());
     }
 
     @PostMapping(path = "{id}/edit")
