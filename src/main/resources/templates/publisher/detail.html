@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Publisher detail</title>
+</head>
+<body>
+
+<div th:include="fragments/navBar">Navigation bar</div>
+
+<form id="edit-form" th:object="${publisher}" th:action="@{'/publishers/' + ${publisher.id} + '/edit'}" th:method="post"
+      action="detail.html">
+    <h1>Publisher detail:</h1>
+
+    <div class="row">
+        <label for="id-input">ID:</label>
+        <input id="id-input" type="text" readonly="readonly" th:field="*{id}" value="1"/>
+    </div>
+
+    <div class="row">
+        <label for="name-input">Name:</label>
+        <input id="name-input" name="name" type="text" th:field="*{name}" value="John Doe"/>
+    </div>
+
+    <div class="row">
+        <button type="submit">Save</button>
+    </div>
+</form>
+
+<form id="delete-form" th:object="${publisher}" th:action="@{'/publishers/' + ${publisher.id}}" th:method="delete">
+    <button type="submit">Delete</button>
+</form>
+
+<div th:include="fragments/booksList">Books list</div>
+<div th:include="fragments/footer">Footer</div>
+</body>
+</html>
