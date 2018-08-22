@@ -52,6 +52,7 @@ public class AuthorRepositoryTest {
 
     @Test
     public void findAuthorAllTest() {
+        repository.deleteAll();
         final Author richardStallman = new Author("Richard Matthew Stallman");
         final Author dennisRitchie = new Author("Dennis MacAlistair Ritchie");
         final Author andrewTanenbaum = new Author("Andrew Stuart Tanenbaum");

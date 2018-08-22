@@ -8,7 +8,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
-import space.efremov.otusspringlibrary.domain.Publisher;
 import space.efremov.otusspringlibrary.domain.Tag;
 
 import java.util.List;
@@ -53,6 +52,7 @@ public class TagRepositoryTest {
 
     @Test
     public void findTagAllTest() {
+        repository.deleteAll();
         final Tag java = new Tag("Java");
         final Tag machineLearning = new Tag("Machine learning");
         final Tag OS = new Tag("OS");
