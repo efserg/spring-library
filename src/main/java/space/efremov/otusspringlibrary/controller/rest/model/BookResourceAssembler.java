@@ -4,12 +4,13 @@ import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
 import space.efremov.otusspringlibrary.controller.rest.BookRestController;
+import space.efremov.otusspringlibrary.controller.rest.model.BookResourceAssembler.BookResource;
 import space.efremov.otusspringlibrary.domain.Book;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 @Component
-public class BookResourceAssembler extends ResourceAssemblerSupport<Book, BookResourceAssembler.BookResource> {
+public class BookResourceAssembler extends ResourceAssemblerSupport<Book, BookResource> {
 
     public BookResourceAssembler() {
         super(BookRestController.class, BookResource.class);

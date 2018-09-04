@@ -4,12 +4,13 @@ import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
 import space.efremov.otusspringlibrary.controller.rest.PublisherRestController;
+import space.efremov.otusspringlibrary.controller.rest.model.PublisherResourceAssembler.PublisherResource;
 import space.efremov.otusspringlibrary.domain.Publisher;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 @Component
-public class PublisherResourceAssembler extends ResourceAssemblerSupport<Publisher, PublisherResourceAssembler.PublisherResource> {
+public class PublisherResourceAssembler extends ResourceAssemblerSupport<Publisher, PublisherResource> {
 
     public PublisherResourceAssembler() {
         super(PublisherRestController.class, PublisherResource.class);

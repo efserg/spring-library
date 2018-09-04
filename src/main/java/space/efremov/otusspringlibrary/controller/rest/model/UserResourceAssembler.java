@@ -4,12 +4,13 @@ import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
 import space.efremov.otusspringlibrary.controller.rest.UserRestController;
+import space.efremov.otusspringlibrary.controller.rest.model.UserResourceAssembler.UserResource;
 import space.efremov.otusspringlibrary.domain.User;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 @Component
-public class UserResourceAssembler extends ResourceAssemblerSupport<User, UserResourceAssembler.UserResource> {
+public class UserResourceAssembler extends ResourceAssemblerSupport<User, UserResource> {
 
     public UserResourceAssembler() {
         super(UserRestController.class, UserResource.class);
