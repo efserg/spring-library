@@ -1,13 +1,13 @@
-package space.efremov.otusspringlibrary.controller.rest;
+package space.efremov.otusspringlibrary.controller.rest.model;
 
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
-import space.efremov.otusspringlibrary.controller.rest.AuthorResourceAssembler.AuthorResource;
+import space.efremov.otusspringlibrary.controller.rest.AuthorRestController;
+import space.efremov.otusspringlibrary.controller.rest.model.AuthorResourceAssembler.AuthorResource;
+import space.efremov.otusspringlibrary.domain.Author;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-
-import space.efremov.otusspringlibrary.domain.Author;
 
 @Component
 public class AuthorResourceAssembler extends ResourceAssemblerSupport<Author, AuthorResource> {
@@ -28,7 +28,7 @@ public class AuthorResourceAssembler extends ResourceAssemblerSupport<Author, Au
         return resource;
     }
 
-    static class AuthorResource extends Resource<Author> {
+    public static class AuthorResource extends Resource<Author> {
         public AuthorResource(Author content) {
             super(content);
         }

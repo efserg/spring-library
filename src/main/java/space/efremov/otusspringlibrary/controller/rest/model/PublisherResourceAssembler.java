@@ -1,8 +1,9 @@
-package space.efremov.otusspringlibrary.controller.rest;
+package space.efremov.otusspringlibrary.controller.rest.model;
 
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
+import space.efremov.otusspringlibrary.controller.rest.PublisherRestController;
 import space.efremov.otusspringlibrary.domain.Publisher;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -26,7 +27,7 @@ public class PublisherResourceAssembler extends ResourceAssemblerSupport<Publish
         return resource;
     }
 
-    static class PublisherResource extends Resource<Publisher> {
+    public static class PublisherResource extends Resource<Publisher> {
         public PublisherResource(Publisher content) {
             super(content);
         }

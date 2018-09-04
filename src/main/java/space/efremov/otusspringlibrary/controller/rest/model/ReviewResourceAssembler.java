@@ -1,8 +1,9 @@
-package space.efremov.otusspringlibrary.controller.rest;
+package space.efremov.otusspringlibrary.controller.rest.model;
 
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
+import space.efremov.otusspringlibrary.controller.rest.ReviewRestController;
 import space.efremov.otusspringlibrary.domain.Review;
 
 @Component
@@ -23,7 +24,7 @@ public class ReviewResourceAssembler extends ResourceAssemblerSupport<Review, Re
         return resource;
     }
 
-    static class ReviewResource extends Resource<Review> {
+    public static class ReviewResource extends Resource<Review> {
         public ReviewResource(Review content) {
             super(content);
         }

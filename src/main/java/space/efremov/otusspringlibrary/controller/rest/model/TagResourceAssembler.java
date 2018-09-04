@@ -1,8 +1,9 @@
-package space.efremov.otusspringlibrary.controller.rest;
+package space.efremov.otusspringlibrary.controller.rest.model;
 
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
+import space.efremov.otusspringlibrary.controller.rest.TagRestController;
 import space.efremov.otusspringlibrary.domain.Tag;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -26,7 +27,7 @@ public class TagResourceAssembler extends ResourceAssemblerSupport<Tag, TagResou
         return resource;
     }
 
-    static class TagResource extends Resource<Tag> {
+    public static class TagResource extends Resource<Tag> {
         public TagResource(Tag content) {
             super(content);
         }

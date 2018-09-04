@@ -1,8 +1,9 @@
-package space.efremov.otusspringlibrary.controller.rest;
+package space.efremov.otusspringlibrary.controller.rest.model;
 
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
+import space.efremov.otusspringlibrary.controller.rest.BookRestController;
 import space.efremov.otusspringlibrary.domain.Book;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -27,7 +28,7 @@ public class BookResourceAssembler extends ResourceAssemblerSupport<Book, BookRe
         return resource;
     }
 
-    static class BookResource extends Resource<Book> {
+    public static class BookResource extends Resource<Book> {
         public BookResource(Book content) {
             super(content);
         }

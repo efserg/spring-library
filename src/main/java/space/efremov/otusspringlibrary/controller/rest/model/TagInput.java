@@ -1,16 +1,16 @@
-package space.efremov.otusspringlibrary.controller.rest;
+package space.efremov.otusspringlibrary.controller.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import javax.validation.constraints.NotBlank;
 
-public class AuthorInput {
+public class TagInput {
 
-    @NotBlank(message = "Author's name must'n be empty")
+    @NotBlank(message = "Tag must'n be empty")
     private final String name;
 
     @JsonCreator
-    public AuthorInput(@NotBlank(message = "Author's name must'n be empty") String name) {
+    public TagInput(@NotBlank(message = "Tag must'n be empty") String name) {
         this.name = name;
     }
 

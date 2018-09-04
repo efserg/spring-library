@@ -1,8 +1,9 @@
-package space.efremov.otusspringlibrary.controller.rest;
+package space.efremov.otusspringlibrary.controller.rest.model;
 
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
+import space.efremov.otusspringlibrary.controller.rest.UserRestController;
 import space.efremov.otusspringlibrary.domain.User;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -26,7 +27,7 @@ public class UserResourceAssembler extends ResourceAssemblerSupport<User, UserRe
         return resource;
     }
 
-    static class UserResource extends Resource<User> {
+    public static class UserResource extends Resource<User> {
         public UserResource(User content) {
             super(content);
         }
