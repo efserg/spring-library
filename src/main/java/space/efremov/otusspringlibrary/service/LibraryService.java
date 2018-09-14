@@ -2,10 +2,12 @@ package space.efremov.otusspringlibrary.service;
 
 import org.springframework.stereotype.Service;
 import space.efremov.otusspringlibrary.domain.Author;
+import space.efremov.otusspringlibrary.domain.Book;
 import space.efremov.otusspringlibrary.domain.Publisher;
 import space.efremov.otusspringlibrary.domain.Tag;
 import space.efremov.otusspringlibrary.exception.EntityNotFoundException;
 import space.efremov.otusspringlibrary.repository.AuthorRepository;
+import space.efremov.otusspringlibrary.repository.BookRepository;
 import space.efremov.otusspringlibrary.repository.PublisherRepository;
 import space.efremov.otusspringlibrary.repository.TagRepository;
 
@@ -18,11 +20,13 @@ public class LibraryService {
     private final AuthorRepository authorRepository;
     private final TagRepository tagRepository;
     private final PublisherRepository publisherRepository;
+    private final BookRepository bookRepository;
 
-    public LibraryService(AuthorRepository authorRepository, TagRepository tagRepository, PublisherRepository publisherRepository) {
+    public LibraryService(AuthorRepository authorRepository, TagRepository tagRepository, PublisherRepository publisherRepository, BookRepository bookRepository) {
         this.authorRepository = authorRepository;
         this.tagRepository = tagRepository;
         this.publisherRepository = publisherRepository;
+        this.bookRepository = bookRepository;
     }
 
     public Tag findTagById(long id) {
@@ -50,8 +54,7 @@ public class LibraryService {
 
     public Author createAuthor(String name) {
         final Author author = new Author(name);
-        authorRepository.save(author);
-        return author;
+        return authorRepository.save(author);
     }
 
     public List<Tag> getAllTags() {
@@ -64,8 +67,7 @@ public class LibraryService {
 
     public Tag createTag(String tag) {
         final Tag entity = new Tag(tag);
-        tagRepository.save(entity);
-        return entity;
+        return tagRepository.save(entity);
     }
 
     public List<Publisher> getAllPublishers() {
@@ -78,7 +80,58 @@ public class LibraryService {
 
     public Publisher createPublisher(String name) {
         final Publisher entity = new Publisher(name);
-        publisherRepository.save(entity);
-        return entity;
+        return publisherRepository.save(entity);
+    }
+
+    public List<Book> getAllBooks() {
+        return bookRepository.findAll();
+    }
+
+    public Book findBookById(long id) {
+        Optional<Book> book = bookRepository.findById(id);
+        return book.orElseThrow(() -> new EntityNotFoundException(Book.class, id));
+    }
+
+    public void removeBook(long id) {
+        bookRepository.delete(findBookById(id));
+    }
+
+    public Book createBook(String title, String isbn, Integer year, Long publisherId, List<Long> authorIds, List<Long> tagIds) {
+        final List<Author> authors = getAuthors(authorIds);
+        final List<Tag> tags = getTags(tagIds);
+        final Publisher publisher = findPublisherById(publisherId);
+        final Book book = new Book(title, isbn, year, publisher, tags, authors);
+        return bookRepository.save(book);
+    }
+
+    private List<Tag> getTags(List<Long> tagIds) {
+        final List<Tag> tags = tagRepository.findAllById(tagIds);
+        if (tags.size() != tagIds.size())
+            throw new EntityNotFoundException(Tag.class);
+        return tags;
+    }
+
+    private List<Author> getAuthors(List<Long> authorIds) {
+        final List<Author> authors = authorRepository.findAllById(authorIds);
+        if (authors.size() != authorIds.size())
+            throw new EntityNotFoundException(Author.class);
+        return authors;
+    }
+
+    public Book updateBook(long id, String title, String isbn, Integer year, Long publisherId, List<Long> authorIds, List<Long> tagIds) {
+        final Book book = findBookById(id);
+        final List<Author> authors = getAuthors(authorIds);
+        final List<Tag> tags = getTags(tagIds);
+        final Publisher publisher = findPublisherById(publisherId);
+
+        book.setTitle(title);
+        book.setPublisher(publisher);
+        book.setIsbn(isbn);
+        book.setYear(year);
+        book.setAuthors(authors);
+        book.setTags(tags);
+
+        return bookRepository.save(book);
+
     }
 }

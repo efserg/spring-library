@@ -21,12 +21,14 @@ public class BookInput {
     @Min(value = 1, message = "Publisher ID must be more then zero")
     private Long publisherId;
 
+    @NotNull(message = "Authors list ID must'n be null")
     private List<Long> authorIds;
 
+    @NotNull(message = "Tags list ID must'n be null")
     private List<Long> tagIds;
 
     @JsonCreator
-    public BookInput(@Size(min = 1, max = 1024, message = "Book's title must'n be empty") String title, @Pattern(regexp = "^(?=[-0-9xX ]{13}$)(?:[0-9]+[- ]){3}[0-9]*[xX0-9]$", message = "ISBN must be in correct ISBN 10 or ISBN 13 format") String isbn, @Max(value = 3000, message = "Year must'n be more then 3000") @Min(value = 1, message = "Year must'n be less then 1") Integer year, @NotNull(message = "Publisher ID must'n be null") @Min(value = 1, message = "Publisher ID must be more then zero") Long publisherId, List<Long> authorIds, List<Long> tagIds) {
+    public BookInput(@Size(min = 1, max = 1024, message = "Book's title must'n be empty") String title, @Pattern(regexp = "^(?=[-0-9xX ]{13}$)(?:[0-9]+[- ]){3}[0-9]*[xX0-9]$", message = "ISBN must be in correct ISBN 10 or ISBN 13 format") String isbn, @Max(value = 3000, message = "Year must'n be more then 3000") @Min(value = 1, message = "Year must'n be less then 1") Integer year, @NotNull(message = "Publisher ID must'n be null") @Min(value = 1, message = "Publisher ID must be more then zero") Long publisherId, @NotNull(message = "Authors list ID must'n be null") List<Long> authorIds, @NotNull(message = "Tags list ID must'n be null") List<Long> tagIds) {
         this.title = title;
         this.isbn = isbn;
         this.year = year;

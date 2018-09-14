@@ -1,5 +1,7 @@
 package space.efremov.otusspringlibrary.exception;
 
+import java.util.Optional;
+
 public class EntityNotFoundException extends RuntimeException {
 
     private Class clazz;
@@ -14,11 +16,15 @@ public class EntityNotFoundException extends RuntimeException {
         this.id = id;
     }
 
+    public EntityNotFoundException(Class<?> clazz) {
+        this(clazz, null);
+    }
+
     public Class<?> getClazz() {
         return clazz;
     }
 
-    public Long getId() {
-        return id;
+    public Optional<Long> getId() {
+        return Optional.ofNullable(id);
     }
 }

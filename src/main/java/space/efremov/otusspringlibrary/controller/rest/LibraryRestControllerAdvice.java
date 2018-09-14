@@ -15,8 +15,9 @@ public class LibraryRestControllerAdvice {
     @ExceptionHandler(EntityNotFoundException.class)
     public void handleEntityNotFoundException(EntityNotFoundException ex, HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.sendError(HttpStatus.NOT_FOUND.value(),
-                "The entity '" + ex.getClazz().getSimpleName() + "' with id = " + ex.getId() + " does not find");
+                ex.getId().isPresent() ?
+                        String.format("The entity '%s' with id = %d doesn't find", ex.getClazz().getSimpleName(), ex.getId().get()) :
+                        String.format("One or more entities '%s' don't find", ex.getClazz().getSimpleName()));
     }
-
 
 }
