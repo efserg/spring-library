@@ -77,7 +77,8 @@ public class Book extends AbstractEntity {
         if (this == o) return true;
         if (!(o instanceof Book)) return false;
         Book book = (Book) o;
-        return year == book.year &&
+        return id != null && Objects.equals(id, book.id) ||
+                Objects.equals(year, book.year) &&
                 Objects.equals(title, book.title) &&
                 Objects.equals(isbn, book.isbn) &&
                 Objects.equals(publisher, book.publisher);

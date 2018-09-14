@@ -42,7 +42,8 @@ public class Review extends AbstractEntity {
         if (this == o) return true;
         if (!(o instanceof Review)) return false;
         Review review = (Review) o;
-        return Objects.equals(user, review.user) &&
+        return id != null && Objects.equals(id, review.id) ||
+                Objects.equals(user, review.user) &&
                 Objects.equals(book, review.book) &&
                 Objects.equals(reviewDate, review.reviewDate);
     }

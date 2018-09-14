@@ -27,7 +27,8 @@ public abstract class NamedEntity extends AbstractEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         NamedEntity that = (NamedEntity) o;
-        return Objects.equals(name, that.name);
+        return id != null && Objects.equals(id, that.id) ||
+                Objects.equals(name, that.name);
     }
 
     @Override

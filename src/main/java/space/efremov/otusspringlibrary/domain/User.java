@@ -39,7 +39,8 @@ public class User extends AbstractEntity {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return Objects.equals(email, user.email) &&
+        return id != null && Objects.equals(id, user.id) ||
+                Objects.equals(email, user.email) &&
                 Objects.equals(username, user.username);
     }
 
