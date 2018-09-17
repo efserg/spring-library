@@ -7,6 +7,8 @@ import space.efremov.otusspringlibrary.controller.rest.model.BookInput;
 import space.efremov.otusspringlibrary.controller.rest.model.BookResourceAssembler;
 import space.efremov.otusspringlibrary.controller.rest.model.BookResourceAssembler.BookResource;
 import space.efremov.otusspringlibrary.controller.rest.model.NestedContentResource;
+import space.efremov.otusspringlibrary.controller.rest.model.ReviewResourceAssembler;
+import space.efremov.otusspringlibrary.controller.rest.model.ReviewResourceAssembler.ReviewResource;
 import space.efremov.otusspringlibrary.domain.Book;
 import space.efremov.otusspringlibrary.service.LibraryService;
 
@@ -18,9 +20,12 @@ public class BookRestController {
 
     private final BookResourceAssembler bookResourceAssembler;
 
-    public BookRestController(LibraryService service, BookResourceAssembler bookResourceAssembler) {
+    private final ReviewResourceAssembler reviewResourceAssembler;
+
+    public BookRestController(LibraryService service, BookResourceAssembler bookResourceAssembler, ReviewResourceAssembler reviewResourceAssembler) {
         this.service = service;
         this.bookResourceAssembler = bookResourceAssembler;
+        this.reviewResourceAssembler = reviewResourceAssembler;
     }
 
     @GetMapping
@@ -31,6 +36,13 @@ public class BookRestController {
     @GetMapping(value = "/{id}")
     Resource<Book> book(@PathVariable("id") long id) {
         return bookResourceAssembler.toResource(service.findBookById(id));
+    }
+
+    @GetMapping(value = "/{id}/reviews")
+    NestedContentResource<ReviewResource> reviews(@PathVariable("id") long id) {
+        return new NestedContentResource<>(
+                reviewResourceAssembler.toResources(service.findBookById(id).getReviews())
+        );
     }
 
     @PostMapping
