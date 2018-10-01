@@ -25,6 +25,8 @@ public class BookResourceAssembler extends ResourceAssemblerSupport<Book, BookRe
     public BookResource toResource(Book entity) {
         BookResource resource = createResourceWithId(entity.getId(), entity);
         resource.add(linkTo(BookRestController.class).slash(entity.getId()).slash("reviews").withRel("book-reviews"));
+        resource.add(linkTo(BookRestController.class).slash(entity.getId()).slash("authors").withRel("book-authors"));
+        resource.add(linkTo(BookRestController.class).slash(entity.getId()).slash("tags").withRel("book-tags"));
         return resource;
     }
 

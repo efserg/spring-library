@@ -40,7 +40,7 @@ public class Book extends AbstractEntity {
             inverseJoinColumns = {@JoinColumn(name = "author_id", foreignKey = @ForeignKey(name = "FK_author_books_author"))})
     private List<Author> authors;
 
-    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "book")
     @JsonIgnore
     private List<Review> reviews;
 

@@ -3,12 +3,11 @@ package space.efremov.otusspringlibrary.controller.rest;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import space.efremov.otusspringlibrary.controller.rest.model.BookInput;
-import space.efremov.otusspringlibrary.controller.rest.model.BookResourceAssembler;
+import space.efremov.otusspringlibrary.controller.rest.model.*;
 import space.efremov.otusspringlibrary.controller.rest.model.BookResourceAssembler.BookResource;
-import space.efremov.otusspringlibrary.controller.rest.model.NestedContentResource;
-import space.efremov.otusspringlibrary.controller.rest.model.ReviewResourceAssembler;
 import space.efremov.otusspringlibrary.controller.rest.model.ReviewResourceAssembler.ReviewResource;
+import space.efremov.otusspringlibrary.controller.rest.model.AuthorResourceAssembler.AuthorResource;
+import space.efremov.otusspringlibrary.controller.rest.model.TagResourceAssembler.TagResource;
 import space.efremov.otusspringlibrary.domain.Book;
 import space.efremov.otusspringlibrary.service.LibraryService;
 
@@ -22,10 +21,16 @@ public class BookRestController {
 
     private final ReviewResourceAssembler reviewResourceAssembler;
 
-    public BookRestController(LibraryService service, BookResourceAssembler bookResourceAssembler, ReviewResourceAssembler reviewResourceAssembler) {
+    private final AuthorResourceAssembler authorResourceAssembler;
+
+    private final TagResourceAssembler tagResourceAssembler;
+
+    public BookRestController(LibraryService service, BookResourceAssembler bookResourceAssembler, ReviewResourceAssembler reviewResourceAssembler, AuthorResourceAssembler authorResourceAssembler, TagResourceAssembler tagResourceAssembler) {
         this.service = service;
         this.bookResourceAssembler = bookResourceAssembler;
         this.reviewResourceAssembler = reviewResourceAssembler;
+        this.authorResourceAssembler = authorResourceAssembler;
+        this.tagResourceAssembler = tagResourceAssembler;
     }
 
     @GetMapping
@@ -42,6 +47,20 @@ public class BookRestController {
     NestedContentResource<ReviewResource> reviews(@PathVariable("id") long id) {
         return new NestedContentResource<>(
                 reviewResourceAssembler.toResources(service.findBookById(id).getReviews())
+        );
+    }
+
+    @GetMapping(value = "/{id}/authors")
+    NestedContentResource<AuthorResource> authors(@PathVariable("id") long id) {
+        return new NestedContentResource<>(
+                authorResourceAssembler.toResources(service.findBookById(id).getAuthors())
+        );
+    }
+
+    @GetMapping(value = "/{id}/tags")
+    NestedContentResource<TagResource> tags(@PathVariable("id") long id) {
+        return new NestedContentResource<>(
+                tagResourceAssembler.toResources(service.findBookById(id).getTags())
         );
     }
 
