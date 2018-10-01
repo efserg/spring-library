@@ -8,7 +8,7 @@ class AllBook extends Component {
     render() {
         return (
             <div>
-                <h1>All Books</h1>
+                <h1 className="book_heading">All Books</h1>
                 {this.props.books.map((book) => <Book key={book.id} book={book}/>)}
             </div>
         );
@@ -22,3 +22,5 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(AllBook);
+
+

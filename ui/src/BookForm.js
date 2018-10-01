@@ -25,13 +25,13 @@ class BookForm extends Component {
 
     render() {
         return (
-            <div>
-                <h1>Create Book</h1>
-                <form onSubmit={this.handleSubmit}>
+            <div className="book-container">
+                <h1 className="book_heading">Create Book</h1>
+                <form className="form" onSubmit={this.handleSubmit}>
                     <input required type="text" ref={(input) => this.getTitle = input} placeholder="Title"/><br/><br/>
                     <input required type="text" ref={(input) => this.getIsbn = input} placeholder="ISBN"/><br/><br/>
                     <input required type="text" ref={(input) => this.getYear = input} placeholder="Year"/><br/><br/>
-                    <button>Create</button>
+                    <button className="save">Create</button>
                 </form>
             </div>
         );
