@@ -17,3 +17,7 @@ spring:
     console:
       enabled: true
       path: /h2-console
+
+app:
+  security:
+    remember-me-key: Remember-Me-Key

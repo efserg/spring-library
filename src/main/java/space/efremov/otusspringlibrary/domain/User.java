@@ -5,9 +5,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import space.efremov.otusspringlibrary.config.SecurityConfig;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,6 +30,20 @@ public class User extends AbstractEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonIgnore
     private List<Review> reviews;
+
+    @Size(max = 255)
+    @JsonIgnore
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
+    public User(@Email String email, String username, @Size(max = 255) String password, UserRole role) {
+        this.email = email;
+        this.username = username;
+        this.password = SecurityConfig.passwordEncoder.encode(password);
+        this.role = role;
+    }
 
     public User(@Email String email, String username) {
         this.email = email;
