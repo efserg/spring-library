@@ -23,7 +23,8 @@ repositories {
 	mavenCentral()
 }
 
-project.build.sourceencoding = "UTF-8"
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
