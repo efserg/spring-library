@@ -63,5 +63,8 @@ INSERT INTO tag_books VALUES (5, 1);
 INSERT INTO tag_books VALUES (6, 1);
 INSERT INTO tag_books VALUES (6, 9);
 
+INSERT INTO usr (id, email, user_name, pwd, user_role)
+VALUES (1, 'admin@otus.ru', 'admin', '$2a$10$Uw0TSDCuzjy9jtppnI0iVevNZnESQvZcuWdHf5QHf5Nzy0h5eOfYW', 'ADMIN');
+
 ALTER SEQUENCE IF EXISTS HIBERNATE_SEQUENCE
 RESTART WITH 100;

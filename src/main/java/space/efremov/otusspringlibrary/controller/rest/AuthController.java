@@ -11,7 +11,6 @@ import java.security.Principal;
 public class AuthController {
 
     private static final String LOGIN_PAGE = "login/index";
-    private static final String SUCCESS_PAGE = "login/success";
     private static final String FAILURE_PAGE = "login/failure";
 
     @GetMapping
@@ -24,8 +23,4 @@ public class AuthController {
         return FAILURE_PAGE;
     }
 
-    @GetMapping("success")
-    public String loginFailurePage(Principal principal) {
-        return SUCCESS_PAGE;
-    }
 }

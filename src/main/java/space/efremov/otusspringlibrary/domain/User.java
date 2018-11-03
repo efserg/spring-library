@@ -24,7 +24,7 @@ public class User extends AbstractEntity {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "username")
+    @Column(name = "user_name")
     private String username;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
@@ -33,9 +33,11 @@ public class User extends AbstractEntity {
 
     @Size(max = 255)
     @JsonIgnore
+    @Column(name = "pwd")
     private String password;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "user_role")
     private UserRole role;
 
     public User(@Email String email, String username, @Size(max = 255) String password, UserRole role) {
