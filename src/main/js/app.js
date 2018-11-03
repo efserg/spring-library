@@ -34,10 +34,8 @@ class BookList extends React.Component{
                 <tbody>
                 <tr>
                     <th>Title</th>
-                    <th>Publisher</th>
                     <th>ISBN</th>
                     <th>Year</th>
-                    <th>Tags</th>
                 </tr>
                 {books}
                 </tbody>
