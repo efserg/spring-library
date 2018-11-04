@@ -10,4 +10,6 @@ public interface TagRepository extends CrudRepository<Tag, Long> {
     @Override
     List<Tag> findAll();
 
+    @Override
+    List<Tag> findAllById(Iterable<Long> ids);
 }

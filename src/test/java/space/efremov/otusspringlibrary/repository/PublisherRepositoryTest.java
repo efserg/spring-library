@@ -8,7 +8,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
-import space.efremov.otusspringlibrary.domain.Author;
 import space.efremov.otusspringlibrary.domain.Publisher;
 
 import java.util.List;
@@ -53,6 +52,7 @@ public class PublisherRepositoryTest {
 
     @Test
     public void findPublisherAllTest() {
+        repository.deleteAll();
         final Publisher apress = new Publisher("Apress");
         final Publisher willey = new Publisher("John Wiley & Sons");
         final Publisher sams = new Publisher("Sams Publishing");

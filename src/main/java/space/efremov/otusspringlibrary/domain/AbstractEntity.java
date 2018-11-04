@@ -1,5 +1,6 @@
 package space.efremov.otusspringlibrary.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,7 @@ public abstract class AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Getter
+    @JsonIgnore
     protected Long id;
 
 }

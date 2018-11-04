@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class AuthorRepositoryTest {
 
     @Autowired
@@ -52,6 +52,7 @@ public class AuthorRepositoryTest {
 
     @Test
     public void findAuthorAllTest() {
+        repository.deleteAll();
         final Author richardStallman = new Author("Richard Matthew Stallman");
         final Author dennisRitchie = new Author("Dennis MacAlistair Ritchie");
         final Author andrewTanenbaum = new Author("Andrew Stuart Tanenbaum");
