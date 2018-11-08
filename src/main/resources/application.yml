@@ -21,3 +21,7 @@ spring:
   data:
     rest:
       base-path: /api
+
+app:
+  security:
+    remember-me-key: Remember-Me-Key

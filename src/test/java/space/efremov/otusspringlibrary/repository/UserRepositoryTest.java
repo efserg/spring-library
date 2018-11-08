@@ -52,7 +52,7 @@ public class UserRepositoryTest {
         em.persist(svensson);
         em.persist(rossy);
         final List<User> users = repository.findAll();
-        assertThat(users).containsOnly(normalverbraucher, svensson, rossy);
+        assertThat(users).contains(normalverbraucher, svensson, rossy);
     }
 
     @Test
